@@ -30,10 +30,21 @@
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 }
-.center-items {
+.center-img, .center-loginblock{
 	flex-grow: 1;
 	width: 50%;
 	text-align: center;
+}
+
+.center-img {
+	border-right: 1px #909090 solid;
+}
+
+.center-loginblock form {
+	margin-left: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
 }
 
 </style>
@@ -41,10 +52,10 @@
 <body>
 	<%-- <jsp:include page="/WEB-INF/jsp/common/head.jsp"></jsp:include> --%>
 	<div class="center-block">
-		<div class="center-items">
+		<div class="center-img">
 			<img alt="用户登录" src="${pageContext.request.contextPath }/img/login_logo.png" />
 		</div>
-		<div class="center-items">
+		<div class="center-loginblock">
 			<form action="/login" method="post" role="form">
 				<div class="input-group input-group-md">
 					<span class="input-group-addon" id="sizing-addon1"><i
