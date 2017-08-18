@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.laobei.dao.service.LoginMapper" >
-	<resultMap id="BaseResultMap" type="com.laobei.eneity.UserLogin">
+	<resultMap id="BaseResultMap" type="com.laobei.entity.UserLogin">
 		<id column="uid" property="uid" jdbcType="BIGINT" />
 		<result column="username" property="username" jdbcType="VARCHAR" />
 		<result column="password" property="password" jdbcType="VARCHAR" />
@@ -12,7 +12,7 @@
    		 uid, username, password, is_admin,status 
   	</sql>
     <!-- 根据用户名和密码来查询用户 -->
-    <select id = "findUser" resultMap="BaseResultMap"  parameterType="">
+    <select id = "findUser" resultMap="BaseResultMap"  parameterType="string">
     	select 
     	<include refid="Base_Column_List" />
     	 from users

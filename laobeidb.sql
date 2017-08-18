@@ -109,7 +109,7 @@ CREATE TABLE `stock_type` (
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `uid` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(20) NOT NULL COMMENT '用户名',
   `password` varchar(20) NOT NULL COMMENT '密码',
   `is_admin` tinyint(4) DEFAULT '0' COMMENT '0:普通用户，1:管理员',

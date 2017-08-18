@@ -1,11 +1,11 @@
-package com.laobei.eneity;
+package com.laobei.entity;
 
 import java.io.Serializable;
 
 /**
  * 
- * @author ll
- *	�û���
+ * @author 梁璐
+ *	
  */
 public class UserLogin implements Serializable{
 	

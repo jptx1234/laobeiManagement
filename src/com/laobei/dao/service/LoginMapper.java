@@ -1,8 +1,10 @@
 package com.laobei.dao.service;
 
-import com.laobei.eneity.UserLogin;
+import org.apache.ibatis.annotations.Param;
+
+import com.laobei.entity.UserLogin;
 
 public interface LoginMapper {
-	UserLogin findUser(String username,String password);
+	UserLogin findUser(@Param("username")String username,@Param("password")String password);
 }
     
