@@ -68,11 +68,27 @@
       </if>
     </trim>
   </insert>
-  <!-- 根据菜谱名字进行查询 -->
-  <select id = "findCookingBook" resultMap="BaseResultMap"  parameterType="string">
+  <!-- 根据菜谱条件进行查询 -->
+  <select id = "findCookingBook" resultMap="BaseResultMap"  parameterType="com.laobei.entity.CookBookEneity">
     	select 
     	<include refid="Base_Column_List" />
     	 from recipes
-    	 where name = #{name}
+    	 <where>
+			<if test="name != null">
+				name like "%"#{name}"%"
+			</if>
+			<if test="id != null">
+				and id=#{id}
+			</if>
+		</where>
     </select>
+    <!--根据id对选中的进行删除  -->
+    <delete id="deleteCookBook" parameterType="Long[]" >
+		delete from recipes
+		where id in
+		<foreach collection="array" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach> 
+  </delete>
 </mapper>

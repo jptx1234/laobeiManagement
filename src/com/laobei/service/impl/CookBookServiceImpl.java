@@ -1,5 +1,7 @@
 package com.laobei.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,14 +24,18 @@ public class CookBookServiceImpl implements CookBookService{
 		cookBookMapper.insertCookingBook(cookBookEneity);
 	}
 	/**
-	 * 根据菜名查找菜谱
+	 * 根据条件查找菜谱
 	 */
 	@Override
-	public CookBookEneity findCookBook(String name) {
-		if(StringUtils.isBlank(name)) {
-			return null;
-		}
-		return cookBookMapper.findCookingBook(name);
+	public List<CookBookEneity> listAllCookBook(CookBookEneity cookBookEneity) {
+		return cookBookMapper.listAllCookBook(cookBookEneity);
+	}
+	/**
+	 * 对菜谱进行删除
+	 */
+	@Override
+	public void deleteCookBook(Long[] ids) {
+		cookBookMapper.deleteCookBook(ids);
 	}
 
 }
