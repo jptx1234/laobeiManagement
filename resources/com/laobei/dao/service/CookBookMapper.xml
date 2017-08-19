@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.laobei.dao.service.LoginMapper" >
+	<resultMap id="BaseResultMap" type="com.laobei.entity.CookBookEneity">
+		<id column="id" property="uid" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="primary_material" property="primaryMaterial" jdbcType="VARCHAR" />
+		<result column="auxiliary_material" property="auxiliaryMaterial" jdbcType="VARCHAR" />
+		<result column="seasoning" property="seasoning" jdbcType="VARCHAR" />
+		<result column="cooking_method" property="cookingMethod" jdbcType="VARCHAR" />
+		<result column="cooking_time" property="cookingTime" jdbcType="TINYINT" />
+		<result column="price" property="price" jdbcType="FLOAT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+   		 id, name,primary_material, auxiliary_material,
+   		 seasoning,cooking_method, cooking_time,price 
+  	</sql>
+	<!--对菜谱进行增加操作  -->
+	<insert id="insertCookingBook" parameterType="com.laobei.entity.CookBookEneity" >
+    insert into recipes
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="primaryMaterial != null" >
+        primary_material,
+      </if>
+      <if test="auxiliaryMaterial != null" >
+        auxiliary_material,
+      </if>
+      <if test="seasoning != null" >
+        seasoning,
+      </if>
+      <if test="cookingMethod != null" >
+        cooking_method,
+      </if>
+      <if test="cookingTime != null" >
+        cooking_time,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="primaryMaterial != null" >
+        #{primary_material},
+      </if>
+      <if test="auxiliaryMaterial != null" >
+        #{auxiliary_material,jdbcType=VARCHAR},
+      </if>
+      <if test="seasoning != null" >
+        #{seasoning,jdbcType=VARCHAR},
+      </if>
+      <if test="cookingMethod != null" >
+        #{cooking_method,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price},
+      </if>
+    </trim>
+  </insert>
+  <!-- 根据菜谱名字进行查询 -->
+  <select id = "findCookingBook" resultMap="BaseResultMap"  parameterType="string">
+    	select 
+    	<include refid="Base_Column_List" />
+    	 from recipes
+    	 where name = #{name}
+    </select>
+</mapper>
