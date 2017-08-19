@@ -50,6 +50,6 @@ public class CookBookAction {
 		}
 		List<CookBookEneity> allCookBook = cookBookService.listAllCookBook(cookBookEneity);
 		model.addAttribute("list", allCookBook);
-		return "cookBook";
+		return "cookBook/list";
 	}
 }

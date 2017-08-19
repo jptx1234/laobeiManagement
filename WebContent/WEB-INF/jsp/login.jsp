@@ -4,14 +4,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<jsp:include page="/WEB-INF/jsp/common/head.jsp"></jsp:include>
 <title>捞贝餐饮管理系统 - 登录</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/css/bootstrap.min.css">
-<script src="${pageContext.request.contextPath }/js/jquery-3.2.1.min.js"></script>
-<script src="${pageContext.request.contextPath }/js/bootstrap.min.js"></script>
 <style>
 .center-block {
 	margin: auto;

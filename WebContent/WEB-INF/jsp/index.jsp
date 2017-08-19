@@ -4,26 +4,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<jsp:include page="/WEB-INF/jsp/common/head.jsp"></jsp:include>
 <title>捞贝餐饮管理系统</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/css/bootstrap-treeview.min.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/css/bootstrap.min.css">
-<script src="${pageContext.request.contextPath }/js/jquery-3.2.1.min.js"></script>
-<script src="${pageContext.request.contextPath }/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/bootstrap-treeview.min.js"></script>
 <style type="text/css">
 #tree{
-	width: 15%;
+	/* width: 15%;
+	display: inline-block; */
 }
 .list-group-item{
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
-.node-tree:hover{
+.node-tree:not(.node-selected):hover{
 	background-color: #dde0fb !important;
 }
 .title{
@@ -37,6 +32,12 @@
     bottom: 40px;
     right: 8%;
 }
+#contentFrame{
+	/* height: 100%; */
+	width: 100%;
+	overflow: visible;
+}
+
 </style>
 </head>
 <body>
@@ -56,7 +57,16 @@
 		</div>
 	</div>
 </div>
-<div id="tree" class="well">
+<div class="containter">
+	<div class="row" style="margin-right: 0;">
+		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"  style="padding-right: 0; padding-left: 0;">
+			<div id="tree" class="well">
+			</div>
+		</div>
+		<div class="col-lg-10 col-md-10 col-sm-2 col-xs-10" style="padding-right: 0; padding-left: 0;">
+			<iframe id="contentFrame" frameborder="0" onload="resizeContentFrame();"></iframe>
+		</div>
+	</div>
 </div>
 
 <script type="text/javascript">
@@ -70,7 +80,7 @@
 				nodes: [
 					{
 						text: '菜谱',
-						href: '#'
+						href: '${pageContext.request.contextPath }/findAllCookBook.do'
 					},
 					{
 						text: '酒水单',
@@ -143,13 +153,37 @@
 			</c:if>
 			];
 		$("#tree").treeview({
-	         color: "#428bca",
-	         backColor: 'transparent',
-	          showBorder: false,
-	          data: treeData
+				color: "#428bca",
+				backColor: 'transparent',
+				showBorder: false,
+				data: treeData,
+				onNodeSelected: openContent
 	        });
 		
 	});
+	
+	function openContent(event, data){
+		$("#contentFrame").attr("src", data.href);
+	}
+	function resizeContentFrame(){
+		var iframe = $("#contentFrame")[0];  
+	    try {  
+	        var bHeight = iframe.contentWindow.document.body.scrollHeight;  
+	  
+	        var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;  
+	  
+	        var height = Math.max(bHeight, dHeight);  
+	  
+	        iframe.height = height;  
+	  
+	    } catch (ex) {}  
+		
+	}
+	/* $("#contentFrame").load(function () {
+		resizeContentFrame();
+	}); */
+	window.onresize=resizeContentFrame;
+
 </script>
 
 </body>

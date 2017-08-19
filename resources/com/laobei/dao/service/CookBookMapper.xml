@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.laobei.dao.service.CookBookMapper" >
 	<resultMap id="BaseResultMap" type="com.laobei.entity.CookBookEneity">
-		<id column="id" property="uid" jdbcType="BIGINT" />
+		<id column="id" property="id" jdbcType="BIGINT" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="primary_material" property="primaryMaterial" jdbcType="VARCHAR" />
 		<result column="auxiliary_material" property="auxiliaryMaterial" jdbcType="VARCHAR" />
@@ -69,7 +69,7 @@
     </trim>
   </insert>
   <!-- 根据菜谱条件进行查询 -->
-  <select id = "findCookingBook" resultMap="BaseResultMap"  parameterType="com.laobei.entity.CookBookEneity">
+  <select id="listAllCookBook" resultMap="BaseResultMap"  parameterType="com.laobei.entity.CookBookEneity">
     	select 
     	<include refid="Base_Column_List" />
     	 from recipes
