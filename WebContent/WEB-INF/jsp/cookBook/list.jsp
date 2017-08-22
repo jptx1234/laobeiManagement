@@ -65,7 +65,7 @@
 		</div>
 	
 	</div>
-	<button type="button" class="btn btn-default" onclick="exportExcel();">导出Excel</button>
+	<button type="button" id="exportExcel" class="btn btn-default" onclick="exportExcel(this);">导出Excel</button>
 
 </div>
 <script type="text/javascript">
@@ -85,9 +85,16 @@
 		window.location.href="${pageContext.request.contextPath}/cookBook/toAdd.do";
 	}
 	
-	function exportExcel(){
+	function exportExcel(btn){
 		if(confirm("确定导出Excel表格吗")){
-			$.get("${pageContext.request.contextPath}/cookBook/exportCookBook.do");
+			var button = $(btn);
+			button.text("正在生成Excel表格……");
+			button.attr("disabled", "disabled");
+			window.setTimeout(function(){
+				button.removeAttr("disabled");
+				button.text("导出Excel");
+			}, 10000);
+			window.location.href="${pageContext.request.contextPath}/cookBook/exportCookBook.do";
 		}
 	}
 </script>

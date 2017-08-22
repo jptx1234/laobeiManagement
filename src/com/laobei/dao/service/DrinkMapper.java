@@ -9,7 +9,7 @@ public interface DrinkMapper {
 	//对酒水单进行添加
 	void insertDrink(DrinkEntity drinkEntity);
 	//根据条件对酒水单进行查询
-	List<CookBookEneity> listAllDrink(DrinkEntity drinkEntity);
+	List<DrinkEntity> listAllDrink(DrinkEntity drinkEntity);
 	//根据选中的id删除对应的酒水单
 	void deleteDrink(Long[] ids);
 }

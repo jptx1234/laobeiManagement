@@ -135,7 +135,7 @@
 		<input type="text" name="price" class="form-control pull-right" style="width: 50%;" placeholder="请输入价格">
 	</div>
 	<div class="text-center" style="margin-top: 40px;">
-		<button type="button" class="btn btn-primary" style="width: 300px; height: 50px;" onclick="save();">保存菜谱</button>
+		<button type="button" class="btn btn-primary btn-lg btn-block" onclick="save();">保存菜谱</button>
 	</div>
 </form>
 </div>

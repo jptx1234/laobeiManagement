@@ -57,7 +57,7 @@
 		</where>
     </select>
     <!--根据id对选中的酒水单进行删除  -->
-    <delete id="deleteCookBook" parameterType="Long[]" >
+    <delete id="deleteDrink" parameterType="Long[]" >
 		delete from drink
 		where id in
 		<foreach collection="array" item="id" open="(" close=")"

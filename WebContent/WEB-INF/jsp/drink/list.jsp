@@ -5,7 +5,7 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/jsp/common/head.jsp"></jsp:include>
-<title>捞贝餐饮管理系统 - 菜谱</title>
+<title>捞贝餐饮管理系统 - 酒水单</title>
 <style type="text/css">
 .mainContent{
 	background: #fff;
@@ -53,28 +53,41 @@
 		</form>
 		<div class="text-right">
 			<button type="button" class="btn btn-success" onclick="toAdd();">新增</button>
-			<button type="button" class="btn btn-danger" onclick="deleteCookbook();">删除</button>
+			<button type="button" class="btn btn-danger" onclick="deletes();">删除</button>
 		</div>
 	
 	</div>
-	<button type="button" class="btn btn-default">导出Excel</button>
+	<button type="button" class="btn btn-default" onclick="exportExcel(this);">导出Excel</button>
 
 </div>
 <script type="text/javascript">
-	function deleteCookbook(){
+	function deletes(){
 		var deleteCount = $("#contentForm :checkbox:checked").length;
 		if (deleteCount == 0){
 			alert("请勾选要删除的酒水单");
 			return;
 		}
 		if(confirm("确定删除吗？")){
-			$("#contentForm").attr("action", "${pageContext.request.contextPath}/cookBook/deletesCookBook.do");
+			$("#contentForm").attr("action", "${pageContext.request.contextPath}/drink/deletesDrink.do");
 			$("#contentForm")[0].submit();
 		}
 	}
 	
 	function toAdd(){
-		window.location.href="${pageContext.request.contextPath}/cookBook/toAdd.do";
+		window.location.href="${pageContext.request.contextPath}/drink/toAdd.do";
+	}
+	
+	function exportExcel(btn){
+		if(confirm("确定导出Excel表格吗")){
+			var button = $(btn);
+			button.text("正在生成Excel表格……");
+			button.attr("disabled", "disabled");
+			window.setTimeout(function(){
+				button.removeAttr("disabled");
+				button.text("导出Excel");
+			}, 10000);
+			window.location.href="${pageContext.request.contextPath}/drink/exportDrink.do";
+		}
 	}
 </script>
 </body>

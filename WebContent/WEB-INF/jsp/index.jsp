@@ -84,7 +84,7 @@
 					},
 					{
 						text: '酒水单',
-						href: '#'
+						href: '${pageContext.request.contextPath }/drink/findAllDrink.do'
 					}
 				],
 			},

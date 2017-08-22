@@ -15,25 +15,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.laobei.entity.CookBookEneity;
+import com.laobei.entity.DrinkEntity;
 import com.laobei.service.CookBookService;
+import com.laobei.service.DrinkService;
 
 @Controller
-@RequestMapping("/cookBook")
-public class CookBookAction {
+@RequestMapping("/drink")
+public class DrinkAction {
 	@Resource
-	private CookBookService cookBookService;
+	private DrinkService drinkService;
 	
 	/**
 	 * 导出菜谱表
 	 */
-	  @RequestMapping(value = "/exportCookBook.do")    
+	  @RequestMapping(value = "/exportDrink.do")    
 	    public void exportExcel(HttpServletRequest request, HttpServletResponse response,
-	    		Model model,CookBookEneity cookBookEneity)     
+	    		Model model,DrinkEntity drinkEntity)     
 	    throws Exception {    
-	        List<CookBookEneity> list = cookBookService.listAllCookBook(cookBookEneity);
-	        HSSFWorkbook wb = cookBookService.exportCookBook(list);    
+	        List<DrinkEntity> list = drinkService.listAllDrink(drinkEntity);
+	        HSSFWorkbook wb = drinkService.exportDrink(list);    
 	        response.setContentType("application/vnd.ms-excel");    
-	        response.setHeader("Content-disposition", "attachment;filename=caipu.xls");    
+	        response.setHeader("Content-disposition", "attachment;filename=jiushuidan.xls");    
 	        OutputStream ouputStream = response.getOutputStream();    
 	        wb.write(ouputStream);    
 	        ouputStream.flush();    
@@ -41,46 +43,46 @@ public class CookBookAction {
 	   }    
 	
 	/**
-	 * 添加菜谱
+	 * 添加酒水单
 	 * @param cookBookEneity
 	 * @return
 	 */
-	@RequestMapping("/addCookBook.do")
-	public String cookBookList(CookBookEneity cookBookEneity) {
-		cookBookService.addCookBook(cookBookEneity);
+	@RequestMapping("/addDrink.do")
+	public String addDrink(DrinkEntity drinkEntity) {
+		drinkService.addDrink(drinkEntity);
 		
-		return "redirect:findAllCookBook.do";
+		return "redirect:findAllDrink.do";
 		
 	}
 	/**
-	 * 删除菜谱
+	 * 删除酒水单
 	 */
-	@RequestMapping("/deletesCookBook.do")
+	@RequestMapping("/deletesDrink.do")
 	public String deleteCookBooks(Long ids[],Model model) {
-		cookBookService.deleteCookBook(ids);
-		return "redirect:/cookBook/findAllCookBook.do";
+		drinkService.deleteDrink(ids);
+		return "redirect:findAllDrink.do";
 	}
 	
 	/**
-	 * 根据条件对菜谱进行查询
+	 * 根据条件对酒水单进行查询
 	 */
-	@RequestMapping("/findAllCookBook.do")
+	@RequestMapping("/findAllDrink.do")
 	public String findAll(String name,Model model) {
-		CookBookEneity cookBookEneity = new CookBookEneity();
+		DrinkEntity drinkEntity = new DrinkEntity();
 		if(name != null) {
-			cookBookEneity.setName(name);
+			drinkEntity.setDrinkName(name);
 			model.addAttribute("name", name);
 		}
-		List<CookBookEneity> allCookBook = cookBookService.listAllCookBook(cookBookEneity);
-		model.addAttribute("list", allCookBook);
-		return "cookBook/list";
+		List<DrinkEntity> allDrink = drinkService.listAllDrink(drinkEntity);
+		model.addAttribute("list", allDrink);
+		return "drink/list";
 	}
 	
 	/**
-	 * 去增加菜谱页面
+	 * 去增加酒水单页面
 	 */
 	@RequestMapping("/toAdd.do")
 	public String toAdd() {
-		return "cookBook/add";
+		return "drink/add";
 	}
 }

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -49,10 +50,13 @@ public class CookBookServiceImpl implements CookBookService{
 	public HSSFWorkbook exportCookBook(List<CookBookEneity> list) {
 		String[] excelHeader = { "菜名", "主材", "辅材","调料","制作方法","制作时间","价格"};    
 		        HSSFWorkbook wb = new HSSFWorkbook();    
-		        HSSFSheet sheet = wb.createSheet("菜谱表");    
+		        HSSFSheet sheet = wb.createSheet("菜谱表");
 		        HSSFRow row = sheet.createRow((int) 0);    
 		        HSSFCellStyle style = wb.createCellStyle();    
-		        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);    
+		        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);  
+		        HSSFFont font = wb.createFont();
+		        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		        style.setFont(font);
 		    
 		        for (int i = 0; i < excelHeader.length; i++) {    
 		            HSSFCell cell = row.createCell(i);    
