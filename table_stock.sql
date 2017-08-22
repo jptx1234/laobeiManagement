@@ -25,6 +25,7 @@ CREATE TABLE `stock` (
   `name` varchar(100) NOT NULL COMMENT '名称',
   `unit` varchar(10) DEFAULT NULL COMMENT '单位',
   `unit_price` float DEFAULT NULL COMMENT '单价',
+  `total_count` float DEFAULT NULL COMMENT '数量',
   `update_time` datetime DEFAULT NULL COMMENT '更新日期',
   `stock_type` varchar(20) DEFAULT NULL COMMENT '库存类型',
   PRIMARY KEY (`id`)
