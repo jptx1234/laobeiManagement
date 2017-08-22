@@ -1,10 +1,15 @@
 package com.laobei.controller;
 
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +22,25 @@ import com.laobei.service.CookBookService;
 public class CookBookAction {
 	@Resource
 	private CookBookService cookBookService;
+	
+	/**
+	 * 导出菜谱表
+	 */
+	  @RequestMapping(value = "/exportCookBook.do")    
+	    public void exportExcel(HttpServletRequest request, HttpServletResponse response,
+	    		Model model,CookBookEneity cookBookEneity)     
+	    throws Exception {    
+	        List<CookBookEneity> list = new ArrayList<CookBookEneity>();    
+	        cookBookService.addCookBook(cookBookEneity);
+	        list.add(cookBookEneity);
+	        HSSFWorkbook wb = cookBookService.exportCookBook(list);    
+	        response.setContentType("application/vnd.ms-excel");    
+	        response.setHeader("Content-disposition", "attachment;filename=student.xls");    
+	        OutputStream ouputStream = response.getOutputStream();    
+	        wb.write(ouputStream);    
+	        ouputStream.flush();    
+	        ouputStream.close();    
+	   }    
 	
 	/**
 	 * 添加菜谱
