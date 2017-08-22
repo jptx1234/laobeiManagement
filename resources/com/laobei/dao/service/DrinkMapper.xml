@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.laobei.dao.service.DrinkMapper" >
+	<resultMap id="BaseResultMap" type="com.laobei.entity.DrinkEntity">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="drink_name" property="drinkName" jdbcType="VARCHAR" />
+		<result column="drink_comment" property="drinkComment" jdbcType="VARCHAR" />
+		<result column="drink_price" property="drinkPrice" jdbcType="FLOAT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+   		 id, drink_name, drink_comment, drink_price 
+  	</sql>
+	<!--对酒水单进行增加操作  -->
+	<insert id="insertDrink" parameterType="com.laobei.entity.DrinkEntity" >
+    insert into drink
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="drinkName != null" >
+        drink_name,
+      </if>
+      <if test="drinkComment != null" >
+        drink_comment,
+      </if>
+      <if test="drinkPrice != null" >
+        drink_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="drinkName != null" >
+        #{drinkName,jdbcType=VARCHAR},
+      </if>
+      <if test="drinkComment != null" >
+        #{drinkComment,jdbcType=VARCHAR},
+      </if>
+      <if test="drinkPrice != null" >
+        #{drinkPrice,jdbcType=FLOAT},
+      </if>
+    </trim>
+  </insert>
+  <!-- 根据酒水单条件进行查询 -->
+  <select id="listAllDrink" resultMap="BaseResultMap"  parameterType="com.laobei.entity.DrinkEntity">
+    	select 
+    	<include refid="Base_Column_List" />
+    	 from drink
+    	 <where>
+			<if test="drinkName != null">
+				drink_name like "%"#{drinkName}"%"
+			</if>
+			<if test="id != null">
+				and id=#{id}
+			</if>
+		</where>
+    </select>
+    <!--根据id对选中的酒水单进行删除  -->
+    <delete id="deleteCookBook" parameterType="Long[]" >
+		delete from drink
+		where id in
+		<foreach collection="array" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach> 
+  </delete>
+</mapper>

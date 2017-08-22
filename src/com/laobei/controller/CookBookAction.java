@@ -31,7 +31,7 @@ public class CookBookAction {
 	    		Model model,CookBookEneity cookBookEneity)     
 	    throws Exception {    
 	        List<CookBookEneity> list = new ArrayList<CookBookEneity>();    
-	        cookBookService.addCookBook(cookBookEneity);
+	        cookBookService.listAllCookBook(cookBookEneity);
 	        list.add(cookBookEneity);
 	        HSSFWorkbook wb = cookBookService.exportCookBook(list);    
 	        response.setContentType("application/vnd.ms-excel");    

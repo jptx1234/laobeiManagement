@@ -19,12 +19,12 @@
 </head>
 <body>
 <div class="well">
-	<h1 class="text-center">菜谱</h1>
+	<h1 class="text-center">酒水单</h1>
 	<div class="mainContent">
 		<form id="searchForm" class="form-inline text-right" role="form">
 			<div class="form-group">
 				<input type="text" class="form-control" name="name"  value="${name}"
-					   placeholder="请输入要查询的菜名">
+					   placeholder="请输入要查询的酒水名">
 				<button type="submit" class="btn btn-default">查询</button>
 			</div>
 		</form>
@@ -33,12 +33,8 @@
 				<thead>
 					<tr>
 						<th>选择</th>
-						<th>菜名</th>
-						<th>主材</th>
-						<th>辅材</th>
-						<th>调料</th>
-						<th>制作方法</th>
-						<th>制作时间</th>
+						<th>酒水名</th>
+						<th>备注</th>
 						<th>价格</th>
 					</tr>
 				</thead>
@@ -46,13 +42,9 @@
 					<c:forEach items="${list }" var="cb">
 						<tr>
 							<td><input type="checkbox" name="ids" value="${cb.id }"></input></td>
-							<td>${cb.name }</td>
-							<td>${cb.primaryMaterial }</td>
-							<td>${cb.auxiliaryMaterial }</td>
-							<td>${cb.seasoning }</td>
-							<td>${cb.cookingMethod }</td>
-							<td>${cb.cookingTime }分钟</td>
-							<td>${cb.price}</td>
+							<td>${cb.drinkName }</td>
+							<td>${cb.drinkComment }</td>
+							<td>${cb.drinkPrice}</td>
 						</tr>
 						
 					</c:forEach>
@@ -65,14 +57,14 @@
 		</div>
 	
 	</div>
-	<button type="button" class="btn btn-default" onclick="exportExcel();">导出Excel</button>
+	<button type="button" class="btn btn-default">导出Excel</button>
 
 </div>
 <script type="text/javascript">
 	function deleteCookbook(){
 		var deleteCount = $("#contentForm :checkbox:checked").length;
 		if (deleteCount == 0){
-			alert("请勾选要删除的菜谱");
+			alert("请勾选要删除的酒水单");
 			return;
 		}
 		if(confirm("确定删除吗？")){
@@ -83,12 +75,6 @@
 	
 	function toAdd(){
 		window.location.href="${pageContext.request.contextPath}/cookBook/toAdd.do";
-	}
-	
-	function exportExcel(){
-		if(confirm("确定导出Excel表格吗")){
-			$.get("${pageContext.request.contextPath}/cookBook/exportCookBook.do");
-		}
 	}
 </script>
 </body>
