@@ -64,7 +64,7 @@
 			</div>
 		</div>
 		<div class="col-lg-10 col-md-10 col-sm-2 col-xs-10" style="padding-right: 0; padding-left: 0;">
-			<iframe id="contentFrame" frameborder="0" onload="resizeContentFrame();"></iframe>
+			<iframe id="contentFrame" frameborder="0"></iframe>
 		</div>
 	</div>
 </div>
@@ -80,7 +80,7 @@
 				nodes: [
 					{
 						text: '菜谱',
-						href: '${pageContext.request.contextPath }/findAllCookBook.do'
+						href: '${pageContext.request.contextPath }/cookBook/findAllCookBook.do'
 					},
 					{
 						text: '酒水单',
@@ -168,21 +168,32 @@
 	function resizeContentFrame(){
 		var iframe = $("#contentFrame")[0];  
 	    try {  
-	        var bHeight = iframe.contentWindow.document.body.scrollHeight;  
+	        /* var bHeight = iframe.contentWindow.document.body.scrollHeight;  
 	  
 	        var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;  
 	  
 	        var height = Math.max(bHeight, dHeight);  
+	  
+	        iframe.height = height;   */
+	  
+	        var height = iframe.contentWindow.document.documentElement.scrollHeight;  
 	  
 	        iframe.height = height;  
 	  
 	    } catch (ex) {}  
 		
 	}
-	/* $("#contentFrame").load(function () {
+	$("#contentFrame").on('load', function () {
 		resizeContentFrame();
-	}); */
+		$($("#contentFrame")[0].contentWindow.document.body).on('click', function(){
+			resizeContentFrame();
+		});
+	});
 	window.onresize=resizeContentFrame;
+	
+	$("#contentFrame").click(resizeContentFrame);
+	
+	/* window.setInterval(resizeContentFrame, 200); */
 
 </script>
 

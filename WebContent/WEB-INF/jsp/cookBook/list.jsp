@@ -60,7 +60,7 @@
 			</table>
 		</form>
 		<div class="text-right">
-			<button type="button" class="btn btn-success">新增</button>
+			<button type="button" class="btn btn-success" onclick="toAdd();">新增</button>
 			<button type="button" class="btn btn-danger" onclick="deleteCookbook();">删除</button>
 		</div>
 	
@@ -76,9 +76,13 @@
 			return;
 		}
 		if(confirm("确定删除吗？")){
-			$("#contentForm").attr("action", "${pageContext.request.contextPath}/deletesCookBook.do");
+			$("#contentForm").attr("action", "${pageContext.request.contextPath}/cookBook/deletesCookBook.do");
 			$("#contentForm")[0].submit();
 		}
+	}
+	
+	function toAdd(){
+		window.location.href="${pageContext.request.contextPath}/cookBook/toAdd.do";
 	}
 </script>
 </body>

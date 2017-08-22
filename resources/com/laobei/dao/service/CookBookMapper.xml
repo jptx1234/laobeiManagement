@@ -52,16 +52,19 @@
         #{name},
       </if>
       <if test="primaryMaterial != null" >
-        #{primary_material},
+        #{primaryMaterial},
       </if>
       <if test="auxiliaryMaterial != null" >
-        #{auxiliary_material,jdbcType=VARCHAR},
+        #{auxiliaryMaterial,jdbcType=VARCHAR},
       </if>
       <if test="seasoning != null" >
         #{seasoning,jdbcType=VARCHAR},
       </if>
       <if test="cookingMethod != null" >
-        #{cooking_method,jdbcType=VARCHAR},
+        #{cookingMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="cookingTime != null" >
+        #{cookingTime,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
         #{price},

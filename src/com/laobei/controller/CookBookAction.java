@@ -13,6 +13,7 @@ import com.laobei.entity.CookBookEneity;
 import com.laobei.service.CookBookService;
 
 @Controller
+@RequestMapping("/cookBook")
 public class CookBookAction {
 	@Resource
 	private CookBookService cookBookService;
@@ -35,7 +36,7 @@ public class CookBookAction {
 	@RequestMapping("/deletesCookBook.do")
 	public String deleteCookBooks(Long ids[],Model model) {
 		cookBookService.deleteCookBook(ids);
-		return "redirect:findAllCookBook.do";
+		return "redirect:/cookBook/findAllCookBook.do";
 	}
 	
 	/**
@@ -51,5 +52,13 @@ public class CookBookAction {
 		List<CookBookEneity> allCookBook = cookBookService.listAllCookBook(cookBookEneity);
 		model.addAttribute("list", allCookBook);
 		return "cookBook/list";
+	}
+	
+	/**
+	 * 去增加菜谱页面
+	 */
+	@RequestMapping("/toAdd.do")
+	public String toAdd() {
+		return "cookBook/add";
 	}
 }
