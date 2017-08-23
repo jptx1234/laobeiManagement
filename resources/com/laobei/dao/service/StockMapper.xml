@@ -13,5 +13,68 @@
 	<sql id="Base_Column_List">
 		id,name,unit,unit_price,total_count,update_time,stock_type
 	</sql>
-	
+	<!--对库存进行增加操作  -->
+	<insert id="insertStock" parameterType="com.laobei.entity.StockEntity" >
+    insert into table_stock
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="unitPrice != null" >
+        unit_price,
+      </if>
+      <if test="totalCount != null" >
+        total_count,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="stockType != null" >
+        stock_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="unit != null" >
+        #{unit},
+      </if>
+      <if test="unitPrice != null" >
+        #{unitPrice},
+      </if>
+      <if test="totalCount != null" >
+        #{totalCount},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime},
+      </if>
+      <if test="stockType != null" >
+        #{stockType}
+      </if>
+    </trim>
+  </insert>
+  <!-- 根据库存条件进行查询 -->
+  <select id="listAllStock" resultMap="BaseResultMap"  parameterType="com.laobei.entity.StockEntity">
+    	select 
+    	<include refid="Base_Column_List" />
+    	 from table_stock
+    	 <where>
+			<if test="name != null">
+				name like "%"#{name}"%"
+			</if>
+			<if test="id != null">
+				and id=#{id}
+			</if>
+		</where>
+    </select>
+    <!-- 根据选中的id对库存项进行更新 -->
+    <update id="updateStock" parameterType="com.laobei.entity.StockEntity">
+           update table_stock set
+            
+           
+   </update>
 </mapper>

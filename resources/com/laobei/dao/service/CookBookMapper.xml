@@ -67,7 +67,7 @@
         #{cookingTime,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
-        #{price},
+        #{price}
       </if>
     </trim>
   </insert>
