@@ -15,7 +15,7 @@ public interface StockService {
 	void deleteStock(Long[] ids);
 
 	StockEntity getEntity(Long id);
-	//对库存进行修改
+	//对库存进行修改 
 	void updateStock(StockEntity stockEntity);
 
 	HSSFWorkbook exportStock(List<StockEntity> list);

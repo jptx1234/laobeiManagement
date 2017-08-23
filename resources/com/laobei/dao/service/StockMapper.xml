@@ -112,7 +112,7 @@
 				update_time=#{updateTime, jdbcType=TIMESTAMP},
 			</if>
 			<if test="stockType != null">
-				stock_type=#{stockType, jdbcType=VARCHAR},
+				stock_type=#{stockType, jdbcType=VARCHAR}
 			</if>
 		</set>
 		<where>

@@ -47,7 +47,7 @@ public class StockAction {
 	}
 
 	/**
-	 * 新增库存
+	 * 添加库存
 	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping("/addStock.do")

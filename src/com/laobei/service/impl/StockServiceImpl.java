@@ -26,7 +26,7 @@ public class StockServiceImpl implements StockService {
 	@Resource
 	private StockMapper stockMapper;
 	/**
-	 * 对库存进行查询所有
+	 * 对库存进行查询所有 
 	 */
 	@Override
 	public List<StockEntity> listAllStock(StockEntity stockEntity) {
