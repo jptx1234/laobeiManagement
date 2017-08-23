@@ -73,8 +73,26 @@
     </select>
     <!-- 根据选中的id对库存项进行更新 -->
     <update id="updateStock" parameterType="com.laobei.entity.StockEntity">
-           update table_stock set
-            
-           
+           update table_stock 
+           <set>
+            <if test="unit != null">
+				unit = #{unit},
+			</if>
+			<if test="unitPrice != null">
+				unit_price = #{unitPrice},
+			</if>
+			<if test="totalCount != null">
+				total_count = #{totalCount},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime}
+			</if>
+			<if test="stockType != null" >
+       			stock_type = #{stockType}
+     		</if>
+			</set>
+			<where>
+				id=#{id}
+			</where>
    </update>
 </mapper>

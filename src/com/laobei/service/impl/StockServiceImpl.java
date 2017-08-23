@@ -55,10 +55,12 @@ public class StockServiceImpl implements StockService{
 		}
 		return null;
 	}
-
+	/**
+	 * 根据id对库存进行修改
+	 */
 	@Override
 	public void updateStock(StockEntity stockEntity) {
-		
+		stockMapper.updateStock(stockEntity);
 	}
 
 }

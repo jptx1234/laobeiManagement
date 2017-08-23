@@ -6,7 +6,7 @@ import com.laobei.entity.CookBookEneity;
 import com.laobei.entity.StockEntity;
 
 public interface StockService {
-	//对库存进行添加
+			//对库存进行添加
 			void insertStock(StockEntity stockEntity);
 			//根据条件对库存进行查询
 			List<CookBookEneity> listAllStock(StockEntity stockEntity);
