@@ -1,22 +1,18 @@
 package com.laobei.controller;
 
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.laobei.entity.CookBookEneity;
 import com.laobei.entity.DrinkEntity;
-import com.laobei.service.CookBookService;
 import com.laobei.service.DrinkService;
 
 @Controller
@@ -26,7 +22,7 @@ public class DrinkAction {
 	private DrinkService drinkService;
 	
 	/**
-	 * 导出菜谱表
+	 * 导出酒水单
 	 */
 	  @RequestMapping(value = "/exportDrink.do")    
 	    public void exportExcel(HttpServletRequest request, HttpServletResponse response,

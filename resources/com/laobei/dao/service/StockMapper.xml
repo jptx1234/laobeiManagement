@@ -7,11 +7,118 @@
 		<result column="unit" property="unit" jdbcType="VARCHAR" />
 		<result column="unit_price" property="unitPrice" jdbcType="FLOAT" />
 		<result column="total_count" property="totalCount" jdbcType="FLOAT" />
-		<result column="update_time" property="updateTime" jdbcType="DATETIME" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="stock_type" property="stockType" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		id,name,unit,unit_price,total_count,update_time,stock_type
 	</sql>
+	
+	<select id="listAllStock" resultMap="BaseResultMap" parameterType="com.laobei.entity.StockEntity">
+		select 
+		<include refid="Base_Column_List" />
+		from stock
+		<where>
+			<if test="stockType != null">
+				stock_type = #{stockType}
+			</if>
+			<if test="name != null">
+				and name like "%"#{name}"%" 
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insertStock" parameterType="com.laobei.entity.StockEntity">
+		insert into stock 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="unit != null">
+				unit,
+			</if>
+			<if test="unitPrice != null">
+				unit_price,
+			</if>
+			<if test="totalCount != null">
+				total_count,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="stockType != null">
+				stock_type,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="name != null">
+				#{name, jdbcType=VARCHAR},
+			</if>
+			<if test="unit != null">
+				#{unit, jdbcType=VARCHAR},
+			</if>
+			<if test="unitPrice != null">
+				#{unitPrice, jdbcType=FLOAT},
+			</if>
+			<if test="totalCount != null">
+				#{totalCount, jdbcType=FLOAT},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime, jdbcType=TIMESTAMP},
+			</if>
+			<if test="stockType != null">
+				#{stockType, jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<delete id="deleteStock" parameterType="Long[]">
+		delete from stock
+		where id in 
+		<foreach collection="array" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<select id="getEntity" parameterType="Long" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from stock where id=#{id}
+	</select>
+	
+	<update id="updateStock" parameterType="com.laobei.entity.StockEntity">
+		update stock 
+		<set>
+			<if test="name != null">
+				name=#{name, jdbcType=VARCHAR},
+			</if>
+			<if test="unit != null">
+				unit=#{unit, jdbcType=VARCHAR},
+			</if>
+			<if test="unitPrice != null">
+				unit_price=#{unitPrice, jdbcType=FLOAT},
+			</if>
+			<if test="totalCount != null">
+				total_count=#{totalCount, jdbcType=FLOAT},
+			</if>
+			<if test="updateTime != null">
+				update_time=#{updateTime, jdbcType=TIMESTAMP},
+			</if>
+			<if test="stockType != null">
+				stock_type=#{stockType, jdbcType=VARCHAR},
+			</if>
+		</set>
+		<where>
+			id=#{id}
+		</where>
+		
+	</update>
 	
 </mapper>

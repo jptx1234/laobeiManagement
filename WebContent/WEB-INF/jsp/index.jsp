@@ -18,9 +18,9 @@
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
-.node-tree:not(.node-selected):hover{
+/* .node-tree:not(.node-selected):hover{
 	background-color: #dde0fb !important;
-}
+} */
 .title{
 	width: 100%;
 	margin-bottom: -35px;
@@ -96,23 +96,23 @@
 				nodes: [
 					{
 						text: '食材',
-						href: '#'
+						href: '${pageContext.request.contextPath }/stock/findAllStock.do?stockType=%E9%A3%9F%E6%9D%90'
 					},
 					{
 						text: '酒水',
-						href: '#'
+						href: '${pageContext.request.contextPath }/stock/findAllStock.do?stockType=%E9%85%92%E6%B0%B4'
 					},
 					{
 						text: '调料',
-						href: '#'
+						href: '${pageContext.request.contextPath }/stock/findAllStock.do?stockType=%E8%B0%83%E6%96%99'
 					},
 					{
 						text: '易耗品',
-						href: '#'
+						href: '${pageContext.request.contextPath }/stock/findAllStock.do?stockType=%E6%98%93%E8%80%97%E5%93%81'
 					},
 					{
 						text: '固定资产',
-						href: '#'
+						href: '${pageContext.request.contextPath }/stock/findAllStock.do?stockType=%E5%9B%BA%E5%AE%9A%E8%B5%84%E4%BA%A7'
 					},
 				]
 			},
@@ -154,16 +154,45 @@
 			];
 		$("#tree").treeview({
 				color: "#428bca",
+				onhoverColor: "#dde0fb",
 				backColor: 'transparent',
 				showBorder: false,
 				data: treeData,
-				onNodeSelected: openContent
+				onNodeSelected: function (event, node) {
+		            $(this).treeview('unselectNode', [node.nodeId, { silent: false }]);
+		        },
+		        onNodeUnselected: function (event, node) {
+		            $(this).treeview('selectNode', [node.nodeId, { silent: true }]);
+		        },
+		        onNodeCollapsed:function(event, node){
+		            $.each(node.nodes, function(){
+		                if(this.state.selected){
+		                   $('#treeview').treeview('selectNode', 
+		                                  [ node.nodeId, { silent: true } ]); 
+		                   return;
+		                }
+		            });     
+		        }
 	        });
+		
+		$("#tree").on('click', openContent);
 		
 	});
 	
-	function openContent(event, data){
-		$("#contentFrame").attr("src", data.href);
+	
+	
+	function openContent(){
+		var selects = $('#tree').treeview('getSelected');
+		if(selects.length == 0){
+			return;
+		}
+		var node = selects[0];
+		var contentFrame = $("#contentFrame")[0];
+		if(node.href == contentFrame.src){
+			contentFrame.contentWindow.location.reload();
+		}else{
+			contentFrame.src=node.href;
+		}
 	}
 	function resizeContentFrame(){
 		var iframe = $("#contentFrame")[0];  

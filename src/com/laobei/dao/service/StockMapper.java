@@ -9,7 +9,9 @@ public interface StockMapper {
 		//对库存进行添加
 		void insertStock(StockEntity stockEntity);
 		//根据条件对库存进行查询
-		List<CookBookEneity> listAllStock(StockEntity stockEntity);
+		List<StockEntity> listAllStock(StockEntity stockEntity);
 		//对库存进行修改
 		void updateStock(StockEntity stockEntity);
+		void deleteStock(Long[] ids);
+		StockEntity getEntity(Long id);
 }
