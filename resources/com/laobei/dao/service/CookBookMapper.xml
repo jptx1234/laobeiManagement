@@ -41,7 +41,7 @@
         cooking_time,
       </if>
       <if test="price != null" >
-        price,
+        price
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >

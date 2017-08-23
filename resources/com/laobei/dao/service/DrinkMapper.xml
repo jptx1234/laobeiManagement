@@ -24,7 +24,7 @@
         drink_comment,
       </if>
       <if test="drinkPrice != null" >
-        drink_price,
+        drink_price
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -38,7 +38,7 @@
         #{drinkComment,jdbcType=VARCHAR},
       </if>
       <if test="drinkPrice != null" >
-        #{drinkPrice,jdbcType=FLOAT},
+        #{drinkPrice,jdbcType=FLOAT}
       </if>
     </trim>
   </insert>

@@ -85,7 +85,7 @@
 				total_count = #{totalCount},
 			</if>
 			<if test="updateTime != null">
-				update_time = #{updateTime}
+				update_time = #{updateTime},
 			</if>
 			<if test="stockType != null" >
        			stock_type = #{stockType}
