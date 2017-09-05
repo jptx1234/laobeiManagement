@@ -13,5 +13,5 @@ public interface StockMapper {
 		//对库存进行修改
 		void updateStock(StockEntity stockEntity);
 		void deleteStock(Long[] ids);
-		StockEntity getEntity(Long id);
+		StockEntity getEntity(StockEntity stockEntity);
 }

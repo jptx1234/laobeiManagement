@@ -118,7 +118,7 @@
 			},
 			{
 				text: '消耗列表',
-				href: '#'
+				href: '${pageContext.request.contextPath }/consume/listAll.do'
 			},
 			{
 				text: '采购列表',
@@ -132,10 +132,6 @@
 				nodes: [
 					{
 						text: '消耗与采购',
-						href: '#'
-					},
-					{
-						text: '菜品时间',
 						href: '#'
 					},
 					{

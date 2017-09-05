@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.laobei.dao.service.ConsumeMapper">
+	<resultMap id="BaseResultMap" type="com.laobei.entity.ConsumeEntity">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="count" property="count" jdbcType="FLOAT" />
+		<result column="stock_type" property="stockType" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,name,count,stock_type,create_time
+	</sql>
+	
+	<select id="listAllConsume" resultMap="BaseResultMap" >
+		select 
+		<include refid="Base_Column_List" />
+		from consume_daily
+		order by create_time desc
+	</select>
+	
+	<insert id="insertConsume" parameterType="com.laobei.entity.ConsumeEntity">
+		insert into consume_daily 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="count != null">
+				count,
+			</if>
+			<if test="stockType != null">
+				stock_type,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="name != null">
+				#{name, jdbcType=VARCHAR},
+			</if>
+			<if test="count != null">
+				#{count, jdbcType=FLOAT},
+			</if>
+			<if test="stockType != null">
+				#{stockType, jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime, jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	
+	
+</mapper>

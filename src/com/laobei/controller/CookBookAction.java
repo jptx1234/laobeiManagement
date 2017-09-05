@@ -13,13 +13,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.laobei.entity.CookBookEneity;
+import com.laobei.entity.StockEntity;
 import com.laobei.service.CookBookService;
+import com.laobei.service.StockService;
 
 @Controller
 @RequestMapping("/cookBook")
 public class CookBookAction {
 	@Resource
 	private CookBookService cookBookService;
+	@Resource
+	private StockService stockService;
 	
 	/**
 	 * 导出菜谱表
@@ -78,7 +82,16 @@ public class CookBookAction {
 	 * 去增加菜谱页面
 	 */
 	@RequestMapping("/toAdd.do")
-	public String toAdd() {
+	public String toAdd(Model model) {
+		StockEntity exampleStock = new StockEntity();
+		exampleStock.setStockType("食材");
+		List<StockEntity> shicaiStock = stockService.listAllStock(exampleStock);
+		exampleStock.setStockType("调料");
+		List<StockEntity> tiaoliaoStock = stockService.listAllStock(exampleStock);
+		
+		model.addAttribute("shicai", shicaiStock);
+		model.addAttribute("tiaoliao", tiaoliaoStock);
+		
 		return "cookBook/add";
 	}
 }

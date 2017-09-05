@@ -66,7 +66,9 @@ public class StockServiceImpl implements StockService {
 
 	@Override
 	public StockEntity getEntity(Long id) {
-		return stockMapper.getEntity(id);
+		StockEntity stockEntity = new StockEntity();
+		stockEntity.setId(id);
+		return stockMapper.getEntity(stockEntity);
 	}
 
 	@Override

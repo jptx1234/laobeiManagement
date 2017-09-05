@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -53,8 +54,9 @@
 				         <td>
 					         <select class="form-control main-name">
 					         	<option disabled selected value="">请选择</option>
-					         	<option >花甲</option>
-					         	<option >鸡</option>
+					         	<c:forEach items="${shicai }" var="mt">
+					         		<option>${mt.name}</option>
+					         	</c:forEach>
 					         </select>
 				         </td>
 				         <td><input type="text" class="form-control"></td>
@@ -80,8 +82,9 @@
 				         <td>
 					         <select class="form-control auxiliary-name">
 					         	<option disabled selected value="">请选择</option>
-					         	<option >葱</option>
-					         	<option >姜</option>
+					         	<c:forEach items="${shicai }" var="mt">
+					         		<option>${mt.name}</option>
+					         	</c:forEach>
 					         </select>
 				         </td>
 				         <td><input type="text" class="form-control"></td>
@@ -107,8 +110,9 @@
 				         <td>
 					         <select class="form-control seasoning-name">
 					         	<option disabled selected value="">请选择</option>
-					         	<option >盐</option>
-					         	<option >酱油</option>
+					         	<c:forEach items="${tiaoliao }" var="mt">
+					         		<option>${mt.name}</option>
+					         	</c:forEach>
 					         </select>
 				         </td>
 				         <td><input type="text" class="form-control"></td>
@@ -199,7 +203,7 @@ function getTotalstring(id){
 		if(count == ""){
 			result += name;
 		}else{
-			result += name+"x"+count;
+			result += name+"*"+count;
 		}
 		if(i != maxIndex){
 			result += ", ";

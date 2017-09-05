@@ -90,7 +90,18 @@
 	<select id="getEntity" parameterType="Long" resultMap="BaseResultMap">
 		select 
 		<include refid="Base_Column_List" />
-		from stock where id=#{id}
+		from stock 
+		<where>
+			<if test="id != null">
+				id=#{id}
+			</if>
+			<if test="name != null">
+				and name=#{name, jdbcType=VARCHAR}
+			</if>
+			<if test="stockType != null">
+				and stock_type=#{stockType, jdbcType=VARCHAR}
+			</if>
+		</where>
 	</select>
 	
 	<update id="updateStock" parameterType="com.laobei.entity.StockEntity">
