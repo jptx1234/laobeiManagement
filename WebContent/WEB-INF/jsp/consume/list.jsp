@@ -15,6 +15,9 @@
 #searchForm{
 	margin-bottom: 10px;
 }
+th, td{
+	text-align: center;
+}
 .date-td, .op-td{
 	width: 10%;
 }
@@ -39,10 +42,10 @@
 				<tbody>
 					<c:forEach items="${list }" var="cb">
 						<tr>
-							<td class="date-td">${cb[date] }</td>
-							<td class="content-td">${cb[content] }</td>
+							<td class="date-td">${cb["date"] }</td>
+							<td class="content-td">${cb["content"] }</td>
 							<td class="op-td">
-								<button type="button" class="btn btn-info" onclick="getPic(cb[date])">保存图片</button>
+								<button type="button" class="btn btn-info" onclick='getPic("${cb["date"]}")'>保存图片</button>
 							</td>
 						</tr>
 						
@@ -61,6 +64,10 @@
 	
 	function toAdd(){
 		window.location.href="${pageContext.request.contextPath}/consume/toAdd.do";
+	}
+	
+	function getPic(date){
+		window.open("${ctx}/consume/generateConsumeList.do?date="+date, "_blank");
 	}
 	
 </script>

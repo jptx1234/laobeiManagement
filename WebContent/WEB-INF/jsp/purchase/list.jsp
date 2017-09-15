@@ -5,7 +5,7 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/jsp/common/head.jsp"></jsp:include>
-<title>捞贝餐饮管理系统 - 消耗列表</title>
+<title>捞贝餐饮管理系统 - 采购列表</title>
 <style type="text/css">
 .mainContent{
 	background: #fff;
@@ -14,6 +14,9 @@
 }
 #searchForm{
 	margin-bottom: 10px;
+}
+th, td{
+	text-align: center;
 }
 .date-td, .op-td{
 	width: 10%;
@@ -25,7 +28,7 @@
 </head>
 <body>
 <div class="well">
-	<h1 class="text-center">消耗列表</h1>
+	<h1 class="text-center">采购列表</h1>
 	<div class="mainContent">
 		<form id="contentForm" method="post">
 			<table class="table table-hover table-striped">
@@ -39,10 +42,10 @@
 				<tbody>
 					<c:forEach items="${list }" var="cb">
 						<tr>
-							<td class="date-td">${cb[date] }</td>
-							<td class="content-td">${cb[content] }</td>
+							<td class="date-td">${cb["date"] }</td>
+							<td class="content-td">${cb["content"] }</td>
 							<td class="op-td">
-								<button type="button" class="btn btn-info" onclick="getPic(cb[date])">保存图片</button>
+								<button type="button" class="btn btn-info" onclick='getPic(cb["date"])'>保存图片</button>
 							</td>
 						</tr>
 						
@@ -60,7 +63,7 @@
 <script type="text/javascript">
 	
 	function toAdd(){
-		window.location.href="${pageContext.request.contextPath}/consume/toAdd.do";
+		window.location.href="${pageContext.request.contextPath}/purchase/toAdd.do";
 	}
 	
 </script>

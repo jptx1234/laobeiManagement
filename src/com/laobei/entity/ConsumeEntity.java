@@ -17,6 +17,10 @@ public class ConsumeEntity implements Serializable {
 	
 	private String name;
 	
+	private String unit;
+	
+	private Float unitPrice;
+	
 	private Float count;
 	
 	private String stockType;
@@ -38,6 +42,22 @@ public class ConsumeEntity implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	public Float getUnitPrice() {
+		return unitPrice;
+	}
+
+	public void setUnitPrice(Float unitPrice) {
+		this.unitPrice = unitPrice;
 	}
 
 	public Float getCount() {

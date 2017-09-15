@@ -50,9 +50,9 @@
 			${user.username }<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
-			<li><a href="#">修改密码</a></li>
+			<li><a href="#" onclick="showChangePwd();">修改密码</a></li>
 			<li class="divider"></li>
-			<li><a href="#">退出</a></li>
+			<li><a href="${ctx }/user/logout.do">退出</a></li>
 		</ul>
 		</div>
 	</div>
@@ -122,7 +122,7 @@
 			},
 			{
 				text: '采购列表',
-				href: '#'
+				href: '${pageContext.request.contextPath }/purchase/listAll.do'
 			},
 			{
 				text: '报表',
@@ -132,11 +132,11 @@
 				nodes: [
 					{
 						text: '消耗与采购',
-						href: '#'
+						href: '${pageContext.request.contextPath }/chart/consumeAndPurchase.do'
 					},
 					{
 						text: '经营报表',
-						href: '#'
+						href: '${pageContext.request.contextPath }/chart/operatingChart.do'
 					},
 
 				]
@@ -144,7 +144,7 @@
 			<c:if test="${user.isAdmin==1}">
 			,{
 				text: '系统管理',
-				href: '#'
+				href: '${pageContext.request.contextPath }/user/admin/listAll.do'
 			}
 			</c:if>
 			];
@@ -191,36 +191,110 @@
 		}
 	}
 	function resizeContentFrame(){
-		var iframe = $("#contentFrame")[0];  
+		/* var iframe = $("#contentFrame")[0];  
 	    try {  
-	        /* var bHeight = iframe.contentWindow.document.body.scrollHeight;  
-	  
-	        var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;  
-	  
-	        var height = Math.max(bHeight, dHeight);  
-	  
-	        iframe.height = height;   */
 	  
 	        var height = iframe.contentWindow.document.documentElement.scrollHeight;  
 	  
 	        iframe.height = height;  
 	  
-	    } catch (ex) {}  
+	    } catch (ex) {}   */
+	    $("#contentFrame").height($(window).height() - $(".title").height());
 		
 	}
 	$("#contentFrame").on('load', function () {
 		resizeContentFrame();
-		$($("#contentFrame")[0].contentWindow.document.body).on('click', function(){
+		/* $($("#contentFrame")[0].contentWindow.document.body).on('click', function(){
 			resizeContentFrame();
-		});
+		}); */
 	});
 	window.onresize=resizeContentFrame;
 	
-	$("#contentFrame").click(resizeContentFrame);
+	/* $("#contentFrame").click(resizeContentFrame); */
 	
 	/* window.setInterval(resizeContentFrame, 200); */
 
+	function showChangePwd(){
+		$("#changePwd").modal('show');
+	}
+	
+	function changePwd(btn){
+		var canSubmit = true;
+		var $btn = $(btn);
+		var oldBtnTxt = $btn.text();
+		$btn.attr("disabled", "disabled");
+		$btn.text("修改中");
+		$("#pwdMsgDiv").hide();
+		if($(":input[name='newPwd']").val() != $(":input[name='reNewPwd']").val()){
+			$("#pwdMsg").text("新密码两次输入的不一致");
+			$("#pwdMsgDiv").show();
+			canSubmit = false;
+		}
+		
+		if(!canSubmit){
+			$btn.text(oldBtnTxt);
+			$btn.removeAttr("disabled");
+			return;
+		}
+		
+		$.post("${ctx}/user/changePwd.do", $("#changePwdForm").serialize(), function(data){
+			if(data.status == 200){
+				$("#pwdMsg").text(data.msg);
+				$("#pwdMsgDiv").removeClass("alert-danger").addClass("alert-success").show();
+				setTimeout(() => {
+					window.location.href="${ctx}/user/login.do";
+				}, 3000);
+			}else{
+				$("#pwdMsg").text(data.msg);
+				$("#pwdMsgDiv").show();
+				$btn.text(oldBtnTxt);
+				$btn.removeAttr("disabled");
+			}
+		}, "json");
+		
+	}
 </script>
-
+<div class="modal fade" id="changePwd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+            </div>
+            <div class="modal-body">
+		        <div id="pwdMsgDiv" class="alert alert-danger" style="display: none;">
+					<!-- <a href="#" class="close" data-dismiss="alert">&times;</a> --> <strong id="pwdMsg"></strong>
+				</div>
+	            <form id="changePwdForm" class="form-horizontal" role="form">
+					<div class="form-group">
+						<label for="oldPwd" class="col-sm-4 control-label">原密码</label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control" name="oldPwd" id="oldPwd" 
+								   placeholder="请输入原密码">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="newPwd" class="col-sm-4 control-label">新密码</label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control" name="newPwd" id="newPwd" 
+								   placeholder="请输入新密码">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="reNewPwd" class="col-sm-4 control-label">再输入一次新密码</label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control" name="reNewPwd" id="reNewPwd" 
+								   placeholder="请再次输入新密码">
+						</div>
+					</div>
+				</form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="changePwd(this);" >提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 </body>
 </html>

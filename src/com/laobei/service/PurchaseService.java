@@ -12,4 +12,8 @@ public interface PurchaseService {
 
 	List<Map<String, Object>> listAllPurchase();
 
+	List<PurchaseEntity> listByDate(String date);
+
+	Float getDaySum(String date);
+
 }

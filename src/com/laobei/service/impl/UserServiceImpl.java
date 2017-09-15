@@ -1,5 +1,8 @@
 package com.laobei.service.impl;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -20,6 +23,21 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 		return loginMapper.findUser(username, password);
+	}
+
+	@Override
+	public List<UserLogin> listAll() {
+		return loginMapper.listAll();
+	}
+
+	@Override
+	public void updateOrAddUser(UserLogin user) {
+		if (user.getUid() == null) {
+			user.setCreateTime(new Date());
+			loginMapper.saveUser(user);
+		}else {
+			loginMapper.updateUser(user);
+		}
 	}
 
 }

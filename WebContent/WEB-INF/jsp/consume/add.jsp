@@ -18,7 +18,7 @@
     padding-top: 20px;
 }
 .table td, .table th{
-	width: 25%;
+	width: 20%;
 	text-align: center;
 }
 .bottom-area{
@@ -66,6 +66,7 @@ td{
 				      <tr>
 				         <th >名称</th>
 				         <th >单位</th>
+				         <th >单价</th>
 				         <th >数量</th>
 				         <th >删除</th>
 				      </tr>
@@ -76,7 +77,12 @@ td{
 				         </td>
 				         <td>
 				         </td>
-				         <td><input type="text" class="form-control"></td>
+				         <td>
+				         </td>
+				         <td>
+				         <input type="text" class="form-control">
+				         	
+				         </td>
 				         <td>
 				         	<button type="button" class="btn btn-danger" onclick="deleteRow(this);"><span class="glyphicon glyphicon-trash"></span></button>
 				         </td>
@@ -94,12 +100,15 @@ td{
 				      <tr>
 				         <th >名称</th>
 				         <th >单位</th>
+				         <th >单价</th>
 				         <th >数量</th>
 				         <th >删除</th>
 				      </tr>
 				   </thead>
 				   <tbody>
 				      <tr class="hidden">
+				         <td>
+				         </td>
 				         <td>
 				         </td>
 				         <td>
@@ -122,12 +131,15 @@ td{
 				      <tr>
 				         <th >名称</th>
 				         <th >单位</th>
+				         <th >单价</th>
 				         <th >数量</th>
 				         <th >删除</th>
 				      </tr>
 				   </thead>
 				   <tbody>
 				      <tr class="hidden">
+				         <td>
+				         </td>
 				         <td>
 				         </td>
 				         <td>
@@ -150,12 +162,15 @@ td{
 				      <tr>
 				         <th >名称</th>
 				         <th >单位</th>
+				         <th >单价</th>
 				         <th >数量</th>
 				         <th >删除</th>
 				      </tr>
 				   </thead>
 				   <tbody>
 				      <tr class="hidden">
+				         <td>
+				         </td>
 				         <td>
 				         </td>
 				         <td>
@@ -178,12 +193,15 @@ td{
 				      <tr>
 				         <th >名称</th>
 				         <th >单位</th>
+				         <th >单价</th>
 				         <th >数量</th>
 				         <th >删除</th>
 				      </tr>
 				   </thead>
 				   <tbody>
 				      <tr class="hidden">
+				         <td>
+				         </td>
 				         <td>
 				         </td>
 				         <td>
@@ -206,12 +224,15 @@ td{
 				      <tr>
 				         <th >名称</th>
 				         <th >单位</th>
+				         <th >单价</th>
 				         <th >数量</th>
 				         <th >删除</th>
 				      </tr>
 				   </thead>
 				   <tbody>
 				      <tr class="hidden">
+				         <td>
+				         </td>
 				         <td>
 				         </td>
 				         <td>
@@ -234,12 +255,15 @@ td{
 				      <tr>
 				         <th >名称</th>
 				         <th >单位</th>
+				         <th >单价</th>
 				         <th >数量</th>
 				         <th >删除</th>
 				      </tr>
 				   </thead>
 				   <tbody>
 				      <tr class="hidden">
+				         <td>
+				         </td>
 				         <td>
 				         </td>
 				         <td>
@@ -262,12 +286,15 @@ td{
 				      <tr>
 				         <th >名称</th>
 				         <th >单位</th>
+				         <th >单价</th>
 				         <th >数量</th>
 				         <th >删除</th>
 				      </tr>
 				   </thead>
 				   <tbody>
 				      <tr class="hidden">
+				         <td>
+				         </td>
 				         <td>
 				         </td>
 				         <td>
@@ -290,12 +317,15 @@ td{
 				      <tr>
 				         <th >名称</th>
 				         <th >单位</th>
+				         <th >单价</th>
 				         <th >数量</th>
 				         <th >删除</th>
 				      </tr>
 				   </thead>
 				   <tbody>
 				      <tr class="hidden">
+				         <td>
+				         </td>
 				         <td>
 				         </td>
 				         <td>
@@ -313,7 +343,7 @@ td{
 	
 	
 	<div class="text-center" style="margin-top: 40px;">
-		<button type="button" class="btn btn-primary btn-lg btn-block" onclick="save();">保存消耗列表</button>
+		<button type="button" id="saveBtn" class="btn btn-primary btn-lg btn-block" onclick="save()">保存消耗列表</button>
 	</div>
 </form>
 </div>
@@ -361,6 +391,9 @@ function onSelectItem(){
 			}else{
 				$(tds[1]).text("份");
 			}
+			if(itemsOfType[i].hasOwnProperty("unitPrice")){
+				$(tds[2]).text(itemsOfType[i]["unitPrice"]);
+			}
 			itemsOfType.splice(i, 1);//提取完属性之后，把这个项从stockData中删除，让他不会再出现在选择框中
 			break;
 		}
@@ -378,6 +411,7 @@ function onSelectItem(){
 function deleteRow(btn){
 	var aim = $(btn).closest("tr");
 	aim.fadeOut("fast", function(){
+		
 		aim.remove();
 	});
 }
@@ -389,8 +423,9 @@ function save(){
 	$("tr").tooltip('destroy');
 	$(".tooltip").remove();
 	var patrn = /^\d+(\.\d+)?$/;
-	$(":text").each(function(){
+	$("tr:visible :text").each(function(){
 		if (!patrn.exec(this.value)) {
+			console.log("err:"+this.value)
 			var $this = $(this).closest("tr:visible");
 			/* $this.attr("data-toggle", "tooltip"); */
 			$this.attr("data-placement", "bottom");
@@ -406,6 +441,8 @@ function save(){
 	}
 	
 	if(canSubmit){
+		$("#saveBtn").attr("disabled", "disabled");
+		$("#saveBtn").text("正在保存并更新库存，请耐心等候");
 		$("#recipeForm")[0].submit();
 	}
 }
@@ -414,9 +451,13 @@ function getTotalString(id){
 	var trs = $("#"+id+" tbody tr:visible");
 	var maxIndex = trs.length - 1;
 	trs.each(function(i){
-		var name = $(this).find("td:first").text();
-		var count = $(this).find(":text").val();
-		result += name+"*"+count;
+		var $this = $(this);
+		var tds = $this.find("td");
+		var name = $(tds[0]).text();
+		var count = $this.find(":text").val();
+		var unit = $(tds[1]).text();
+		var unitPrice = $(tds[2]).text();
+		result += (name+"*"+count+"*"+unit+"*"+unitPrice);
 		if(i < maxIndex){
 			result += ", ";
 		}

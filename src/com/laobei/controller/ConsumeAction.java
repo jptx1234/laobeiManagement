@@ -2,6 +2,7 @@ package com.laobei.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,6 +82,8 @@ public class ConsumeAction {
 		
 		JSONObject gongziObject = new JSONObject();
 		gongziObject.put("name", "工资");
+		gongziObject.put("unit", "元");
+		gongziObject.put("unitPrice", 1);
 		gongziObject.put("id", 1);
 		JSONArray gongziArray = new JSONArray();
 		gongziArray.add(gongziObject);
@@ -88,6 +91,8 @@ public class ConsumeAction {
 		
 		JSONObject guanliObject = new JSONObject();
 		guanliObject.put("name", "管理费用");
+		guanliObject.put("unit", "元");
+		guanliObject.put("unitPrice", 1);
 		guanliObject.put("id", 1);
 		JSONArray guanliArray = new JSONArray();
 		guanliArray.add(guanliObject);
@@ -95,6 +100,8 @@ public class ConsumeAction {
 		
 		JSONObject yiwaiObject = new JSONObject();
 		yiwaiObject.put("name", "意外支出");
+		yiwaiObject.put("unit", "元");
+		yiwaiObject.put("unitPrice", 1);
 		yiwaiObject.put("id", 1);
 		JSONArray yiwaiArray = new JSONArray();
 		yiwaiArray.add(yiwaiObject);
@@ -151,6 +158,35 @@ public class ConsumeAction {
 		return "redirect:/consume/listAll.do";
 	}
 	
+	
+	@RequestMapping("/generateConsumeList.do")
+	public String generateConsumeList(String date, Model model) {
+		List<ConsumeEntity> listByDate = consumeService.listByDate(date);
+		Map<String, Map<String, Float>> resultMap = new HashMap<>();
+		for (ConsumeEntity consumeEntity : listByDate) {
+			String stockType = consumeEntity.getStockType();
+			Map<String, Float> nameAndCountMap = resultMap.get(stockType);
+			if (nameAndCountMap == null) {
+				nameAndCountMap = new HashMap<>();
+				resultMap.put(stockType, nameAndCountMap);
+			}
+			String consumeName = consumeEntity.getName();
+			String key = consumeName + "（单位：" + consumeEntity.getUnit() + "）";
+			Float nowCount = nameAndCountMap.get(key);
+			if (nowCount == null) {
+				nowCount = 0.0F;
+			}
+			nowCount += consumeEntity.getCount();
+			nameAndCountMap.put(key, nowCount);
+		}
+		
+		model.addAttribute("date", date);
+		model.addAttribute("result", resultMap);
+		return "/consume/generateConsumeList";
+	}
+	
+	
+	
 	private List<ConsumeEntity> parseTotalString(String string, String stockType) {
 		List<ConsumeEntity> result = new ArrayList<>();
 		if (StringUtils.isEmpty(string)) {
@@ -160,30 +196,20 @@ public class ConsumeAction {
 		for (String consumeString : entities) {
 			if (StringUtils.isNotEmpty(consumeString)) {
 				String consumeStringWithoutBlank = consumeString.trim();
-				String[] props = consumeStringWithoutBlank.split("*");
-				if (props.length==2) {
+				String[] props = consumeStringWithoutBlank.split("\\*");
+				if (props.length == 4) {
 					try {
 						ConsumeEntity consumeEntity = new ConsumeEntity();
 						consumeEntity.setName(props[0]);
 						consumeEntity.setCount(Float.parseFloat(props[1]));
+						consumeEntity.setUnit(props[2]);
+						consumeEntity.setUnitPrice(Float.parseFloat(props[3]));
 						consumeEntity.setStockType(stockType);
 						consumeEntity.setCreateTime(new Date());
 						result.add(consumeEntity);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				}else if (props.length == 1) {
-					try {
-						ConsumeEntity consumeEntity = new ConsumeEntity();
-						consumeEntity.setName(props[0]);
-						consumeEntity.setCount(1F);
-						consumeEntity.setStockType(stockType);
-						consumeEntity.setCreateTime(new Date());
-						result.add(consumeEntity);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					
 				}
 			}
 		}

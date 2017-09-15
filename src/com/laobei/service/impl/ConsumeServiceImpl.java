@@ -35,11 +35,13 @@ public class ConsumeServiceImpl implements ConsumeService {
 			stockModel.setName(consumeEntity.getName());
 			stockModel.setStockType(consumeEntity.getStockType());
 			StockEntity stockEntity = stockMapper.getEntity(stockModel);
-			Float stockCount = stockEntity.getTotalCount();
-			Float consumeCount = consumeEntity.getCount();
-			if (stockCount != null && consumeCount != null) {
-				stockEntity.setTotalCount(stockCount - consumeCount);
-				stockMapper.updateStock(stockEntity);
+			if (stockEntity != null) {
+				Float stockCount = stockEntity.getTotalCount();
+				Float consumeCount = consumeEntity.getCount();
+				if (stockCount != null && consumeCount != null) {
+					stockEntity.setTotalCount(stockCount - consumeCount);
+					stockMapper.updateStock(stockEntity);
+				}
 			}
 		}
 		
@@ -56,7 +58,8 @@ public class ConsumeServiceImpl implements ConsumeService {
 			String dateString = sdf.format(consume.getCreateTime());
 			if (StringUtils.isEmpty(lastDate)) {
 				lastDate = dateString;
-			}else if (lastDate.equals(dateString)) {
+			}
+			if (lastDate.equals(dateString)) {
 				sb.append(consume.getName());
 				sb.append(" * ");
 				sb.append(consume.getCount());
@@ -82,8 +85,41 @@ public class ConsumeServiceImpl implements ConsumeService {
 				}
 			}
 		}
+		String content = null;
+		if (sb.length() > 60) {
+			content = sb.substring(0, 60);
+			content = content + "...";
+		}else {
+			content = sb.toString();
+		}
+		Map<String, Object> resultMap = new HashMap<>();
+		if (StringUtils.isNotEmpty(lastDate) && sb.length() != 0) {
+			resultMap.put("date", lastDate);
+			resultMap.put("content", content);
+			
+			result.add(resultMap);
+		}
 		
 		return result;
+	}
+
+	@Override
+	public List<ConsumeEntity> listByDate(String date) {
+		String beginTime = date + " 00:00:00";
+		String endTime = date + " 23:59:59";
+		List<ConsumeEntity> consumeList = consumeMapper.listByRange(beginTime, endTime);
+		
+		return consumeList;
+	}
+
+	@Override
+	public Float getDaySum(String date) {
+		String beginTime = date + " 00:00:00";
+		String endTime = date + " 23:59:59";
+		
+		Float sum = consumeMapper.getRangeSum(beginTime, endTime);
+		
+		return sum;
 	}
 
 }

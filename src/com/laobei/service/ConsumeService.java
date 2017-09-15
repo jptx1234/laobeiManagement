@@ -11,4 +11,8 @@ public interface ConsumeService {
 
 	List<Map<String, Object>> listAllConsume();
 
+	List<ConsumeEntity> listByDate(String date);
+
+	Float getDaySum(String date);
+
 }

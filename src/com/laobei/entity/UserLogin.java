@@ -1,6 +1,7 @@
 package com.laobei.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 
@@ -17,6 +18,8 @@ public class UserLogin implements Serializable{
 	private String username;
 	
 	private String password;
+	
+	private Date createTime;
 	
 	private int isAdmin = 0;
 	
@@ -48,6 +51,14 @@ public class UserLogin implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public int getIsAdmin() {

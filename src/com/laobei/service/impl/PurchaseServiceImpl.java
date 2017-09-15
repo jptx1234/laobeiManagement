@@ -57,7 +57,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 			String dateString = sdf.format(purchase.getCreateTime());
 			if (StringUtils.isEmpty(lastDate)) {
 				lastDate = dateString;
-			}else if (lastDate.equals(dateString)) {
+			}
+			if (lastDate.equals(dateString)) {
 				sb.append(purchase.getName());
 				sb.append(" * ");
 				sb.append(purchase.getCount());
@@ -84,7 +85,44 @@ public class PurchaseServiceImpl implements PurchaseService {
 			}
 		}
 		
+		if (StringUtils.isNotEmpty(lastDate) && sb.length() != 0) {
+			Map<String, Object> resultMap = new HashMap<>();
+			resultMap.put("date", lastDate);
+			String content = null;
+			if (sb.length() > 60) {
+				content = sb.substring(0, 60);
+				content = content + "...";
+			}else {
+				content = sb.toString();
+			}
+			
+			resultMap.put("content", content);
+			
+			result.add(resultMap);
+			
+		}
+		
+		
 		return result;
+	}
+
+	@Override
+	public List<PurchaseEntity> listByDate(String date) {
+		String beginTime = date + " 00:00:00";
+		String endTime = date + " 23:59:59";
+		List<PurchaseEntity> purchaseList = purchaseMapper.listByRange(beginTime, endTime);
+		
+		return purchaseList;
+	}
+
+	@Override
+	public Float getDaySum(String date) {
+		String beginTime = date + " 00:00:00";
+		String endTime = date + " 23:59:59";
+		
+		Float sum = purchaseMapper.getRangeSum(beginTime, endTime);
+		
+		return sum;
 	}
 
 }

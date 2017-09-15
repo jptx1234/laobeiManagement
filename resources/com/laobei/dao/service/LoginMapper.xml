@@ -5,11 +5,12 @@
 		<id column="uid" property="uid" jdbcType="BIGINT" />
 		<result column="username" property="username" jdbcType="VARCHAR" />
 		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="is_admin" property="isAdmin" jdbcType="TINYINT" />
 		<result column="status" property="status" jdbcType="TINYINT" />
 	</resultMap>
 	<sql id="Base_Column_List" >
-   		 uid, username, password, is_admin,status 
+   		 uid, username, password, create_time, is_admin,status 
   	</sql>
     <!-- 根据用户名和密码来查询用户 -->
     <select id = "findUser" resultMap="BaseResultMap"  parameterType="string">
@@ -19,5 +20,75 @@
     	 where username = #{username}
     	 and
     	 password = #{password}
+    	 and
+    	 status = 1
     </select>
+    
+    <select id="listAll"  resultMap="BaseResultMap" >
+    	select
+    	<include refid="Base_Column_List" />
+    	 from users
+    </select>
+    
+    <insert id="saveUser" parameterType="com.laobei.entity.UserLogin">
+    	insert into users
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+    		<if test="username != null">
+    			username,
+    		</if>
+    		<if test="password != null">
+    			password,
+    		</if>
+    		<if test="createTime != null">
+    			create_time,
+    		</if>
+    		<if test="isAdmin != null">
+    			is_admin,
+    		</if>
+    		<if test="status != null">
+    			status,
+    		</if>
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+    		<if test="username != null">
+    			#{username, jdbcType=VARCHAR},
+    		</if>
+    		<if test="password != null">
+    			#{password, jdbcType=VARCHAR},
+    		</if>
+    		<if test="createTime != null">
+    			#{createTime, jdbcType=TIMESTAMP},
+    		</if>
+    		<if test="isAdmin != null">
+    			#{isAdmin, jdbcType=TINYINT},
+    		</if>
+    		<if test="status != null">
+    			#{status, jdbcType=TINYINT},
+    		</if>
+    	</trim>
+    </insert>
+    
+    <update id="updateUser" parameterType="com.laobei.entity.UserLogin">
+    	update users
+    	<trim prefix="set " suffix="" suffixOverrides="," >
+    		<if test="username != null">
+    			username=#{username, jdbcType=VARCHAR},
+    		</if>
+    		<if test="password != null">
+    			password=#{password, jdbcType=VARCHAR},
+    		</if>
+    		<if test="createTime != null">
+    			create_time=#{createTime, jdbcType=TIMESTAMP},
+    		</if>
+    		<if test="isAdmin != null">
+    			is_admin=#{isAdmin, jdbcType=TINYINT},
+    		</if>
+    		<if test="status != null">
+    			status=#{status, jdbcType=TINYINT},
+    		</if>
+    	</trim>
+    	<where>
+    		uid = #{uid}
+    	</where>
+    </update>
 </mapper>

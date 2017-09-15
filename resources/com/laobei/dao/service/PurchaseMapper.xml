@@ -1,32 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.laobei.dao.service.ConsumeMapper">
-	<resultMap id="BaseResultMap" type="com.laobei.entity.ConsumeEntity">
+<mapper namespace="com.laobei.dao.service.PurchaseMapper">
+	<resultMap id="BaseResultMap" type="com.laobei.entity.PurchaseEntity">
 		<id column="id" property="id" jdbcType="BIGINT" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="unit" property="unit" jdbcType="VARCHAR" />
+		<result column="unit_price" property="unitPrice" jdbcType="FLOAT" />
 		<result column="count" property="count" jdbcType="FLOAT" />
 		<result column="stock_type" property="stockType" jdbcType="VARCHAR" />
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id,name,count,stock_type,create_time
+		id,name,unit,unit_price,count,stock_type,create_time
 	</sql>
 	
-	<select id="listAllConsume" resultMap="BaseResultMap" >
+	<select id="listAllPurchase" resultMap="BaseResultMap" >
 		select 
 		<include refid="Base_Column_List" />
-		from consume_daily
+		from purchase_daily
 		order by create_time desc
 	</select>
 	
-	<insert id="insertConsume" parameterType="com.laobei.entity.ConsumeEntity">
-		insert into consume_daily 
+	<select id="listByRange" resultMap="BaseResultMap" parameterType="string">
+		select 
+		<include refid="Base_Column_List" />
+		from purchase_daily
+		<where><![CDATA[
+			create_time >= #{beginTime, jdbcType=VARCHAR}
+			and
+			create_time <= #{endTime, jdbcType=VARCHAR}
+			]]>
+		</where>
+	</select>
+	
+	<select id="getRangeSum" resultType="float" parameterType="string">
+		select SUM(unit_price * `count`)
+		from purchase_daily
+		<where><![CDATA[
+			create_time >= #{beginTime, jdbcType=VARCHAR}
+			and
+			create_time <= #{endTime, jdbcType=VARCHAR}
+			]]>
+		</where>
+	</select>
+	
+	<insert id="insertPurchase" parameterType="com.laobei.entity.PurchaseEntity">
+		insert into purchase_daily 
 		<trim prefix="(" suffix=")" suffixOverrides="," >
 			<if test="id != null">
 				id,
 			</if>
 			<if test="name != null">
 				name,
+			</if>
+			<if test="unit != null">
+				unit,
+			</if>
+			<if test="unitPrice != null">
+				unit_price,
 			</if>
 			<if test="count != null">
 				count,
@@ -44,6 +75,12 @@
 			</if>
 			<if test="name != null">
 				#{name, jdbcType=VARCHAR},
+			</if>
+			<if test="unit != null">
+				#{unit, jdbcType=VARCHAR},
+			</if>
+			<if test="unitPrice != null">
+				#{unitPrice, jdbcType=FLOAT},
 			</if>
 			<if test="count != null">
 				#{count, jdbcType=FLOAT},
