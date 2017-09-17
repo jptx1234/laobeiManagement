@@ -13,7 +13,6 @@
 	padding-bottom: 50px;
 }
 .content{
-	background-color: #fff;
 	padding-bottom: 20px;
     padding-top: 20px;
 }
@@ -41,6 +40,7 @@
 	<c:set var="isNew" value="false"></c:set>
 </c:if>
 <div class="well">
+<div class="">
 <form id="drinkForm" 
 	<c:if test="${isNew }">
 		action="${pageContext.request.contextPath }/stock/addStock.do"
@@ -50,7 +50,7 @@
 	</c:if> 
 	method="post">
 	<div>
-		<h3 class="text-center">
+		<h2 class="text-center" style="color: #fff;">
 			<c:if test="${isNew}">
 				新增库存
 			</c:if>
@@ -58,25 +58,25 @@
 				修改库存
 				<input type="hidden" name="id" value="${entity.id}" />
 			</c:if>
-		</h3>
+		</h2>
 	</div>
-	<div class="content bottom-area">
+	<div class="content bottom-area add-content">
 		<label >名称</label>
 		<input type="text" name="name" value="${entity.name }" class="form-control pull-right" <c:if test="${!isNew }">disabled</c:if> placeholder="请输入名称">
 	</div>
-	<div class="content bottom-area">
+	<div class="content bottom-area add-content">
 		<label >单位</label>
 		<input type="text" name="unit" value="${entity.unit }" class="form-control pull-right" placeholder="请输入单位">
 	</div>
-	<div class="content bottom-area">
+	<div class="content bottom-area add-content">
 		<label >单价</label>
 		<input type="text" name="unitPrice" value="${entity.unitPrice }"  class="form-control pull-right" placeholder="请输入单价">
 	</div>
-	<div class="content bottom-area">
+	<div class="content bottom-area add-content">
 		<label >数量</label>
 		<input type="text" name="totalCount" value="${entity.totalCount }"  class="form-control pull-right" placeholder="请输入数量">
 	</div>
-	<div class="content bottom-area">
+	<div class="content bottom-area add-content">
 		<label >类型</label>
 		<input type="text" name="stockType" 
 			value="<c:if test="${isNew }">${stockType }</c:if><c:if test="${!isNew }">${entity.stockType }</c:if>" 
@@ -86,6 +86,7 @@
 		<button type="button" class="btn btn-primary btn-lg btn-block" onclick="save();">保存库存</button>
 	</div>
 </form>
+</div>
 </div>
 
 <script type="text/javascript">

@@ -8,7 +8,6 @@
 <title>捞贝餐饮管理系统 - 酒水单</title>
 <style type="text/css">
 .mainContent{
-	background: #fff;
 	padding: 10px;
 	margin-bottom: 10px;
 }
@@ -29,7 +28,7 @@
 			</div>
 		</form>
 		<form id="contentForm" method="post">
-			<table class="table table-hover table-striped">
+			<table class="table table-hover">
 				<thead>
 					<tr>
 						<th>选择</th>

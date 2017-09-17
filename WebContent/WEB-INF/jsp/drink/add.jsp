@@ -12,7 +12,6 @@
 	padding-bottom: 50px;
 }
 .content{
-	background-color: #fff;
 	padding-bottom: 20px;
     padding-top: 20px;
 }
@@ -31,20 +30,21 @@
 </head>
 <body>
 <div class="well">
+<div class="">
 <form id="drinkForm" action="${pageContext.request.contextPath }/drink/addDrink.do" method="post">
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">酒水名</h3>
 		<div class="text-center content"  style="padding-left: 20px; padding-right: 20px;">
 			<input type="text" name="drinkName" class="form-control" placeholder="请输入酒水名">
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">备注</h3>
 		<div class="content" style="padding-left: 20px; padding-right: 20px;">
 			<textarea class="form-control" rows="3" name="drinkComment"></textarea>
 		</div>
 	</div>
-	<div class="content bottom-area">
+	<div class="content bottom-area add-content">
 		<label >价格</label>
 		<input type="text" name="drinkPrice" class="form-control pull-right" style="width: 50%;" placeholder="请输入价格">
 	</div>
@@ -52,6 +52,7 @@
 		<button type="button" class="btn btn-primary btn-lg btn-block" onclick="save();">保存酒水</button>
 	</div>
 </form>
+</div>
 </div>
 
 <script type="text/javascript">

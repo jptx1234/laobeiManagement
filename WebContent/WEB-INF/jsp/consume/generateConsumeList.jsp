@@ -9,7 +9,6 @@
 <title>捞贝餐饮管理系统 - 消耗表</title>
 <style type="text/css">
 .mainContent{
-	background: #fff;
 	padding: 10px;
 	margin-bottom: 10px;
 }
@@ -44,7 +43,7 @@
 		<button type="button" class="btn btn-primary btn-lg btn-block" onclick="saveImg();">保存图片</button>
 	</div>
 
-	<div class="mainContent" id="content">
+	<div class="mainContent" id="content" style="background-color: #fff;">
 		<table id="content-table" class="table table-bordered">
 			<tbody>
 			<tr class="propName" style="font-weight: bold;"><td colspan="2">消耗列表 ${date }</td></tr>

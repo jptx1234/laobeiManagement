@@ -13,12 +13,11 @@
 	padding-bottom: 50px;
 }
 .content{
-	background-color: #fff;
 	padding-bottom: 20px;
     padding-top: 20px;
 }
 .table td, .table th{
-	width: 50%;
+	width: 33%;
 	text-align: center;
 }
 .bottom-area{
@@ -32,33 +31,36 @@
 </head>
 <body>
 <div class="well">
+<div class="">
 <form id="recipeForm" action="${pageContext.request.contextPath }/cookBook/addCookBook.do" method="post">
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">菜名</h3>
 		<div class="text-center content"  style="padding-left: 20px; padding-right: 20px;">
 			<input type="text" name="name" class="form-control" placeholder="请输入菜名">
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">主材</h3>
 		<div class="text-center content">
 			<table class="table" id="main-table">
 				   <thead>
 				      <tr>
 				         <th >名称</th>
-				         <th >克重或数量</th>
+				         <th >单位</th>
+				         <th >数量</th>
 				      </tr>
 				   </thead>
 				   <tbody>
 				      <tr>
 				         <td>
-					         <select class="form-control main-name">
+					         <select class="form-control main-name"  onchange="onSelectStock(this);">
 					         	<option disabled selected value="">请选择</option>
 					         	<c:forEach items="${shicai }" var="mt">
-					         		<option>${mt.name}</option>
+					         		<option data-unit="${mt.unit }">${mt.name}</option>
 					         	</c:forEach>
 					         </select>
 				         </td>
+				         <td class="unit"></td>
 				         <td><input type="text" class="form-control"></td>
 				      </tr>
 				   </tbody>
@@ -67,26 +69,28 @@
 			<input type="hidden" name="primaryMaterial" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">辅材</h3>
 		<div class="text-center content">
 			<table class="table" id="auxiliary-table">
 				   <thead>
 				      <tr>
 				         <th>名称</th>
-				         <th>克重或数量</th>
+				         <th>单位</th>
+				         <th>数量</th>
 				      </tr>
 				   </thead>
 				   <tbody>
 				      <tr>
 				         <td>
-					         <select class="form-control auxiliary-name">
+					         <select class="form-control auxiliary-name" onchange="onSelectStock(this);">
 					         	<option disabled selected value="">请选择</option>
 					         	<c:forEach items="${shicai }" var="mt">
-					         		<option>${mt.name}</option>
+					         		<option data-unit="${mt.unit }">${mt.name}</option>
 					         	</c:forEach>
 					         </select>
 				         </td>
+				         <td class="unit"></td>
 				         <td><input type="text" class="form-control"></td>
 				      </tr>
 				   </tbody>
@@ -95,26 +99,28 @@
 			<input type="hidden" name="auxiliaryMaterial" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">调料</h3>
 		<div class="text-center content">
 			<table class="table" id="seasoning-table">
 				   <thead>
 				      <tr>
 				         <th>名称</th>
-				         <th>克重或数量</th>
+				         <th>单位</th>
+				         <th>数量</th>
 				      </tr>
 				   </thead>
 				   <tbody>
 				      <tr>
 				         <td>
-					         <select class="form-control seasoning-name">
+					         <select class="form-control seasoning-name" onchange="onSelectStock(this);">
 					         	<option disabled selected value="">请选择</option>
 					         	<c:forEach items="${tiaoliao }" var="mt">
-					         		<option>${mt.name}</option>
+					         		<option data-unit="${mt.unit }">${mt.name}</option>
 					         	</c:forEach>
 					         </select>
 				         </td>
+				         <td class="unit"></td>
 				         <td><input type="text" class="form-control"></td>
 				      </tr>
 				   </tbody>
@@ -123,18 +129,18 @@
 			<input type="hidden" name="seasoning" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">制作方法</h3>
 		<div class="content" style="padding-left: 20px; padding-right: 20px;">
 			<textarea class="form-control" rows="3" name="cookingMethod"></textarea>
 		</div>
 	</div>
-	<div class="content bottom-area">
+	<div class="content bottom-area add-content">
 		<label for="cookingTime" >制作时间（分钟）</label>
 		<select name="cookingTime" class="form-control pull-right" style="width: 50%;">
 		</select>
 	</div>
-	<div class="content bottom-area">
+	<div class="content bottom-area add-content">
 		<label for="cookingTime" >价格</label>
 		<input type="text" name="price" class="form-control pull-right" style="width: 50%;" placeholder="请输入价格">
 	</div>
@@ -142,6 +148,7 @@
 		<button type="button" class="btn btn-primary btn-lg btn-block" onclick="save();">保存菜谱</button>
 	</div>
 </form>
+</div>
 </div>
 
 <script type="text/javascript">
@@ -163,7 +170,15 @@ function addEntry(tableName){
 	var eleModel = $("#"+tableName+" tbody tr:first").clone();
 	eleModel.find("select")[0].selectedIndex=0;
 	eleModel.find("input").val("");
+	eleModel.find(".unit").text("");
 	$("#"+tableName).append(eleModel);
+}
+
+function onSelectStock(ele){
+	var $ele = $(ele);
+	var selected = $ele.find("option:selected");
+	var unit = selected.attr("data-unit");
+	$ele.parent().nextAll(".unit").text(unit);
 }
 
 function save(){

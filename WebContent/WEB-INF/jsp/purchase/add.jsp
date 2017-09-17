@@ -13,7 +13,6 @@
 	padding-bottom: 50px;
 }
 .content{
-	background-color: #fff;
 	padding-bottom: 20px;
     padding-top: 20px;
 }
@@ -58,7 +57,8 @@ td{
 </head>
 <body>
 <div class="well">
-<div class="pull-left" style="position: fixed;right: 0;top: 0;background-color: #f5f5f5;padding: 20px;width: 16%;margin-right: 2%;height: 100%;">
+<div class="">
+<div class="pull-left add-content" style="position: fixed;right: 0;top: 0;padding: 20px;width: 16%;margin-right: 2%;height: 100%;">
 	<select id="typeSelect" class="form-control" onchange="onSelectType();">
 		<option id="typeSelectLoading" disabled selected>加载中……</option>
 		<option value="sc">食材</option>
@@ -74,7 +74,7 @@ td{
 	</select>
 </div>
 <form id="recipeForm" action="${pageContext.request.contextPath }/purchase/addPurchase.do" method="post" enctype="multipart/form-data">
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">食材</h3>
 		<div class="text-center content">
 			<table class="table" id="sc-table">
@@ -103,7 +103,7 @@ td{
 			<input type="hidden" name="sc" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">酒水</h3>
 		<div class="text-center content">
 			<table class="table" id="js-table">
@@ -133,7 +133,7 @@ td{
 		</div>
 	</div>
 	
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">调料</h3>
 		<div class="text-center content">
 			<table class="table" id="tl-table">
@@ -162,7 +162,7 @@ td{
 			<input type="hidden" name="tl" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">易耗品</h3>
 		<div class="text-center content">
 			<table class="table" id="yhp-table">
@@ -191,7 +191,7 @@ td{
 			<input type="hidden" name="yhp" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">固定资产</h3>
 		<div class="text-center content">
 			<table class="table" id="gdzc-table">
@@ -220,7 +220,7 @@ td{
 			<input type="hidden" name="gdzc" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">上传图片</h3>
 		<div class="text-center content">
 			<div  id="upload" style="text-align: left;">
@@ -238,6 +238,7 @@ td{
 		<button type="button" class="btn btn-primary btn-lg btn-block" onclick="save();">保存采购列表</button>
 	</div>
 </form>
+</div>
 </div>
 
 <script type="text/javascript">

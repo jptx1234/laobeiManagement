@@ -1,22 +1,20 @@
 package com.laobei.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import com.laobei.dao.service.StockMapper;
 import com.laobei.entity.StockEntity;
 import com.laobei.service.StockService;
+import com.laobei.utils.ExcelUtils;
 
 @Service
 public class StockServiceImpl implements StockService {
@@ -79,30 +77,23 @@ public class StockServiceImpl implements StockService {
 	@Override
 	public HSSFWorkbook exportStock(List<StockEntity> list) {
 		String[] excelHeader = { "名称", "数量", "单位", "单价" };
-		HSSFWorkbook wb = new HSSFWorkbook();
-		HSSFSheet sheet = wb.createSheet("库存表");
-		HSSFRow row = sheet.createRow((int) 0);
-		HSSFCellStyle style = wb.createCellStyle();
-		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		HSSFFont font = wb.createFont();
-		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-		style.setFont(font);
-
-		for (int i = 0; i < excelHeader.length; i++) {
-			HSSFCell cell = row.createCell(i);
-			cell.setCellValue(excelHeader[i]);
-			cell.setCellStyle(style);
-			sheet.autoSizeColumn(i);
+		
+		List<String> titleList = new ArrayList<>();
+		titleList.addAll(Arrays.asList(excelHeader));
+		
+		List<List<String>> contentList = new ArrayList<>();
+		for (StockEntity stockEntity : list) {
+			List<String> row = new ArrayList<>();
+			contentList.add(row);
+			row.add(stockEntity.getName());
+			row.add(String.valueOf(stockEntity.getTotalCount()));
+			row.add(stockEntity.getUnit());
+			row.add(String.valueOf(stockEntity.getUnitPrice()));
 		}
+		
+		String stockType = list.size() > 0 ? list.get(0).getStockType() : "";
 
-		for (int i = 0; i < list.size(); i++) {
-			row = sheet.createRow(i + 1);
-			StockEntity stockEntity = list.get(i);
-			row.createCell(0).setCellValue(stockEntity.getName());
-			row.createCell(1).setCellValue(stockEntity.getTotalCount());
-			row.createCell(2).setCellValue(stockEntity.getUnit());
-			row.createCell(3).setCellValue(stockEntity.getUnitPrice());
-		}
+		HSSFWorkbook wb = ExcelUtils.exportExcel(stockType+"库存表", titleList, contentList);
 		return wb;
 	}
 

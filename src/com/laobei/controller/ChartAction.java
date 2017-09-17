@@ -145,6 +145,7 @@ public class ChartAction {
 		Float consumeSum = consumeService.getDaySum(date);
 		Float purchaseSum = purchaseService.getDaySum(date);
 		
+		model.addAttribute("date", date);
 		model.addAttribute("result", result);
 		model.addAttribute("consumeSum", consumeSum == null ? 0 : consumeSum);
 		model.addAttribute("purchaseSum", purchaseSum == null ? 0 : purchaseSum);

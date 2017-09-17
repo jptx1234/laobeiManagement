@@ -35,6 +35,8 @@ public class UserAction {
 			if (username != null) {
 				model.addAttribute("msg", "账号或密码错误");
 			}
+			model.addAttribute("username", username);
+			model.addAttribute("password", password);
 			
 			return "/login";
 		}

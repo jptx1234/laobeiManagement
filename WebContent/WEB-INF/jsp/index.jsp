@@ -10,6 +10,16 @@
 	href="${pageContext.request.contextPath }/css/bootstrap-treeview.min.css">
 <script src="${pageContext.request.contextPath }/js/bootstrap-treeview.min.js"></script>
 <style type="text/css">
+.containter{
+	background: url("${ctx}/img/menu_bg.png");
+	background-repeat:no-repeat;
+	background-size: cover;
+}
+.menu{
+	background-color: rgba(0, 0, 0, 0.20);
+	padding-top: 20px;
+	padding-right: 0px;
+}
 #tree{
 	/* width: 15%;
 	display: inline-block; */
@@ -17,6 +27,13 @@
 .list-group-item{
 	padding-top: 5px;
 	padding-bottom: 5px;
+	padding-left: 35px;
+}
+.list-group-item:hover{
+	border: 1px #fff solid;
+}
+.list-group{
+	margin-bottom: 0px;
 }
 /* .node-tree:not(.node-selected):hover{
 	background-color: #dde0fb !important;
@@ -59,11 +76,11 @@
 </div>
 <div class="containter">
 	<div class="row" style="margin-right: 0;">
-		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"  style="padding-right: 0; padding-left: 0;">
-			<div id="tree" class="well">
+		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 menu">
+			<div id="tree" class="">
 			</div>
 		</div>
-		<div class="col-lg-10 col-md-10 col-sm-2 col-xs-10" style="padding-right: 0; padding-left: 0;">
+		<div class="col-lg-10 col-md-10 col-sm-2 col-xs-10 content" style="padding-right: 0; padding-left: 0;">
 			<iframe id="contentFrame" frameborder="0"></iframe>
 		</div>
 	</div>
@@ -149,10 +166,11 @@
 			</c:if>
 			];
 		$("#tree").treeview({
-				color: "#428bca",
-				onhoverColor: "#dde0fb",
+				color: "#fff",
+				onhoverColor: 'transparent',
 				backColor: 'transparent',
-				showBorder: false,
+				showBorder: true,
+				borderColor: 'transparent',
 				data: treeData,
 				onNodeSelected: function (event, node) {
 		            $(this).treeview('unselectNode', [node.nodeId, { silent: false }]);
@@ -173,6 +191,8 @@
 		
 		$("#tree").on('click', openContent);
 		
+		resizeContentFrame();
+		
 	});
 	
 	
@@ -184,6 +204,9 @@
 		}
 		var node = selects[0];
 		var contentFrame = $("#contentFrame")[0];
+		if(typeof(node.href) == "undefined"){
+			return;
+		}
 		if(node.href == contentFrame.src){
 			contentFrame.contentWindow.location.reload();
 		}else{
@@ -199,7 +222,9 @@
 	        iframe.height = height;  
 	  
 	    } catch (ex) {}   */
-	    $("#contentFrame").height($(window).height() - $(".title").height());
+	    var height = $(window).height() - $(".title").height() + 15;
+	    $("#contentFrame").height(height);
+	    $(".menu").height(height);
 		
 	}
 	$("#contentFrame").on('load', function () {

@@ -8,7 +8,6 @@
 <title>捞贝餐饮管理系统 - 消耗与采购对比表</title>
 <style type="text/css">
 .mainContent{
-	background: #fff;
 	padding: 10px;
 	margin-bottom: 10px;
 }

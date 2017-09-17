@@ -46,4 +46,31 @@
                -o-transition: all 0.4s ease;
                /* Opera */
 }
+body{
+	background-color: rgba(0, 0, 0, 0);
+}
+.well{
+	background-color: transparent;
+	border: none;
+}
+h1{
+	color: #fff;
+}
+.mainContent{
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius: 6px;
+	padding: 20px;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    border-top: 1px solid #fff;
+}
+.table>thead>tr>th {
+    border-bottom: 2px solid #ffffff;
+}
+.add-content{
+    background-color: rgba(255, 255, 255, 0.71);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 6px;
+}
 </style>

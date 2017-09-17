@@ -8,7 +8,6 @@
 <title>捞贝餐饮管理系统 - 消耗列表</title>
 <style type="text/css">
 .mainContent{
-	background: #fff;
 	padding: 10px;
 	margin-bottom: 10px;
 }
@@ -31,7 +30,7 @@ th, td{
 	<h1 class="text-center">消耗列表</h1>
 	<div class="mainContent">
 		<form id="contentForm" method="post">
-			<table class="table table-hover table-striped">
+			<table class="table table-hover">
 				<thead>
 					<tr>
 						<th class="date-td">日期</th>

@@ -13,7 +13,6 @@
 	padding-bottom: 50px;
 }
 .content{
-	background-color: #fff;
 	padding-bottom: 20px;
     padding-top: 20px;
 }
@@ -38,7 +37,8 @@ td{
 </head>
 <body>
 <div class="well">
-<div class="pull-left" style="position: fixed;right: 0;top: 0;background-color: #f5f5f5;padding: 20px;width: 16%;margin-right: 2%;height: 100%;">
+<div class="">
+<div class="pull-left add-content" style="position: fixed;right: 0;top: 0;padding: 20px;width: 16%;margin-right: 2%;height: 100%;">
 	<select id="typeSelect" class="form-control" onchange="onSelectType();">
 		<option id="typeSelectLoading" disabled selected>加载中……</option>
 		<option value="cp">菜品</option>
@@ -58,7 +58,7 @@ td{
 	</select>
 </div>
 <form id="recipeForm" action="${pageContext.request.contextPath }/consume/addConsume.do" method="post">
-	<div>
+	<div  class="add-content">
 		<h3 class="text-center">菜品</h3>
 		<div class="text-center content">
 			<table class="table table-hover table-striped" id="cp-table">
@@ -92,7 +92,7 @@ td{
 			<input type="hidden" name="cp" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">酒水</h3>
 		<div class="text-center content">
 			<table class="table" id="js-table">
@@ -123,7 +123,7 @@ td{
 			<input type="hidden" name="js" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">食材</h3>
 		<div class="text-center content">
 			<table class="table" id="sc-table">
@@ -154,7 +154,7 @@ td{
 			<input type="hidden" name="sc" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">调料</h3>
 		<div class="text-center content">
 			<table class="table" id="tl-table">
@@ -185,7 +185,7 @@ td{
 			<input type="hidden" name="tl" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">易耗品</h3>
 		<div class="text-center content">
 			<table class="table" id="yhp-table">
@@ -216,7 +216,7 @@ td{
 			<input type="hidden" name="yhp" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">固定资产</h3>
 		<div class="text-center content">
 			<table class="table" id="gdzc-table">
@@ -247,7 +247,7 @@ td{
 			<input type="hidden" name="gdzc" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">工资</h3>
 		<div class="text-center content">
 			<table class="table" id="gz-table">
@@ -278,7 +278,7 @@ td{
 			<input type="hidden" name="gz" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">管理费用</h3>
 		<div class="text-center content">
 			<table class="table" id="glfy-table">
@@ -309,7 +309,7 @@ td{
 			<input type="hidden" name="glfy" />
 		</div>
 	</div>
-	<div>
+	<div class="add-content">
 		<h3 class="text-center">意外支出</h3>
 		<div class="text-center content">
 			<table class="table" id="ywzc-table">
@@ -346,6 +346,7 @@ td{
 		<button type="button" id="saveBtn" class="btn btn-primary btn-lg btn-block" onclick="save()">保存消耗列表</button>
 	</div>
 </form>
+</div>
 </div>
 
 <script type="text/javascript">
