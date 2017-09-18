@@ -77,7 +77,7 @@
 		<input type="text" name="totalCount" value="${entity.totalCount }"  class="form-control pull-right" placeholder="请输入数量">
 	</div>
 	<div class="content bottom-area add-content">
-		<label >类型</label>
+		<label >类型（不可修改）</label>
 		<input type="text" name="stockType" 
 			value="<c:if test="${isNew }">${stockType }</c:if><c:if test="${!isNew }">${entity.stockType }</c:if>" 
 			class="form-control pull-right" readonly/>

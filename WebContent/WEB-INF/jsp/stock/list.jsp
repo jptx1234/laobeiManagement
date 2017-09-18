@@ -68,7 +68,7 @@
 	}
 	
 	function exportExcel(btn){
-		if(confirm("确定导出Excel表格吗")){
+		jqconfirm("确定导出Excel表格吗？", function(){
 			var button = $(btn);
 			button.text("正在生成Excel表格……");
 			button.attr("disabled", "disabled");
@@ -77,7 +77,7 @@
 				button.text("导出Excel");
 			}, 10000);
 			window.location.href="${pageContext.request.contextPath}/stock/exportStock.do?stockType=${stockType}";
-		}
+		});
 	}
 </script>
 </body>

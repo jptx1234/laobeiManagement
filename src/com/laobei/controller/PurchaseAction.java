@@ -1,6 +1,7 @@
 package com.laobei.controller;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -232,5 +233,60 @@ public class PurchaseAction {
 		}
 		
 		return result;
+	}
+	
+	@RequestMapping("/generatePurchaseList.do")
+	public String generateConsumeList(String date, Model model, HttpSession session) {
+		List<PurchaseEntity> listByDate = purchaseService.listByDate(date);
+		Map<String, Map<String, Float>> resultMap = new HashMap<>();
+		for (PurchaseEntity purchaseEntity : listByDate) {
+			String stockType = purchaseEntity.getStockType();
+			Map<String, Float> nameAndCountMap = resultMap.get(stockType);
+			if (nameAndCountMap == null) {
+				nameAndCountMap = new HashMap<>();
+				resultMap.put(stockType, nameAndCountMap);
+			}
+			String consumeName = purchaseEntity.getName();
+			String key = consumeName + "（单位：" + purchaseEntity.getUnit() + "）";
+			Float nowCount = nameAndCountMap.get(key);
+			if (nowCount == null) {
+				nowCount = 0.0F;
+			}
+			nowCount += purchaseEntity.getCount();
+			nameAndCountMap.put(key, nowCount);
+		}
+		
+		if (StringUtils.isNotEmpty(date)) {
+			String[] dateStrings = date.split("-");
+			String year = dateStrings[0];
+			String month = dateStrings[1];
+			String parentPath = session.getServletContext().getRealPath("/") + "/upload/" + year + "/" + month + "/";
+			final String yyyyMMddString = date.replaceAll("-", "");
+			File parentPathFile = new File(parentPath);
+			if (parentPathFile.exists() && parentPathFile.isDirectory()) {
+				File[] listFiles = parentPathFile.listFiles(new FilenameFilter() {
+					
+					@Override
+					public boolean accept(File dir, String name) {
+						if (name.startsWith(yyyyMMddString)) {
+							return true;
+						}
+						return false;
+					}
+				});
+				
+				List<String> files = new ArrayList<>();
+				for (File file : listFiles) {
+					files.add(file.getName());
+				}
+				
+				model.addAttribute("imgPath", year + "/" + month);
+				model.addAttribute("imgFiles", files);
+			}
+		}
+		
+		model.addAttribute("date", date);
+		model.addAttribute("result", resultMap);
+		return "/purchase/generatePurchaseList";
 	}
 }

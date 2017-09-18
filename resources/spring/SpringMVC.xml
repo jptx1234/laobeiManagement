@@ -45,5 +45,24 @@
 	        <property name="defaultEncoding" value="UTF-8"></property>  
 	    </bean>  
 		
+		<!-- 拦截器  -->
+		<mvc:interceptors>
+			<!-- 登录拦截器  -->
+			<mvc:interceptor>
+				<mvc:mapping path="/**"/>
+				<mvc:exclude-mapping path="/"/>
+				<mvc:exclude-mapping path="/user/login.do"/>
+				<mvc:exclude-mapping path="/user/logout.do"/>
+				<mvc:exclude-mapping path="/index.do"/>
+				<bean class="com.laobei.interceptor.LoginInterceptor" />
+			</mvc:interceptor>
+			
+			<!-- 权限拦截器  -->
+			<mvc:interceptor>
+				<mvc:mapping path="/user/admin/**"/>
+				<bean class="com.laobei.interceptor.AuthorityInterceptor" />
+			</mvc:interceptor>
+		</mvc:interceptors>
+		
 </beans>
 

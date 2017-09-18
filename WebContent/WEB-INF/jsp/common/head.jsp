@@ -7,9 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/plugin/jquery-confirm/jquery-confirm.min.css">
 <script src="${pageContext.request.contextPath }/js/jquery-3.2.1.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath }/plugin/laydate/laydate.js"></script>
+<script src="${pageContext.request.contextPath }/plugin/jquery-confirm/jquery-confirm.min.js"></script>
 <c:set var="ctx" value="${pageContext.request.contextPath }" scope="request"></c:set>
 <style>
 ::-webkit-scrollbar {
@@ -74,3 +77,30 @@ h1{
     margin-bottom: 6px;
 }
 </style>
+<script>
+alert = function(msg){
+	$.alert({
+		title: '警告',
+		content: msg,
+		type: 'red'
+	});
+};
+function jqconfirm(msg, callback){
+	$.confirm({
+	    title: '是否确定',
+	    content: msg,
+	    type: 'blue',
+	    typeAnimated: true,
+	    buttons: {
+	        yes: {
+	            text: '确定',
+	            btnClass: 'btn-blue',
+	            action: callback
+	        },
+	        no: {
+	        	text: '取消'
+	        }
+	    }
+	});
+}
+</script>

@@ -74,10 +74,10 @@
 			alert("请勾选要删除的菜谱");
 			return;
 		}
-		if(confirm("确定删除吗？")){
+		jqconfirm("确定删除吗？", function(){
 			$("#contentForm").attr("action", "${pageContext.request.contextPath}/cookBook/deletesCookBook.do");
 			$("#contentForm")[0].submit();
-		}
+		});
 	}
 	
 	function toAdd(){
@@ -85,7 +85,7 @@
 	}
 	
 	function exportExcel(btn){
-		if(confirm("确定导出Excel表格吗")){
+		jqconfirm("确定导出Excel表格吗？", function(){
 			var button = $(btn);
 			button.text("正在生成Excel表格……");
 			button.attr("disabled", "disabled");
@@ -94,7 +94,7 @@
 				button.text("导出Excel");
 			}, 10000);
 			window.location.href="${pageContext.request.contextPath}/cookBook/exportCookBook.do";
-		}
+		});
 	}
 </script>
 </body>

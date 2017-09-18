@@ -4,6 +4,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
 <head>
+<script type="text/javascript">
+	if(window.top != window.self){
+		window.top.location.href=window.self.location.href;
+	}
+</script>
 <jsp:include page="/WEB-INF/jsp/common/head.jsp"></jsp:include>
 <title>捞贝餐饮管理系统 - 登录</title>
 <style>

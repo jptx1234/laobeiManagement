@@ -44,7 +44,7 @@ th, td{
 							<td class="date-td">${cb["date"] }</td>
 							<td class="content-td">${cb["content"] }</td>
 							<td class="op-td">
-								<button type="button" class="btn btn-info" onclick='getPic(cb["date"])'>保存图片</button>
+								<button type="button" class="btn btn-info" onclick='getPic("${cb["date"]}")'>保存图片</button>
 							</td>
 						</tr>
 						
@@ -63,6 +63,10 @@ th, td{
 	
 	function toAdd(){
 		window.location.href="${pageContext.request.contextPath}/purchase/toAdd.do";
+	}
+	
+	function getPic(date){
+		window.open("${ctx}/purchase/generatePurchaseList.do?date="+date, "_blank");
 	}
 	
 </script>

@@ -223,7 +223,7 @@
 	  
 	    } catch (ex) {}   */
 	    var height = $(window).height() - $(".title").height() + 15;
-	    $("#contentFrame").height(height);
+	    $("#contentFrame").height(height + 20);
 	    $(".menu").height(height);
 		
 	}
