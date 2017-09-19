@@ -20,6 +20,9 @@
 <div class="well">
 	<h1 class="text-center">${stockType }库存</h1>
 	<div class="mainContent">
+		<div class="pull-left">
+			<button type="button" class="btn btn-success" onclick="toAdd();">新增</button>
+		</div>
 		<form id="searchForm" class="form-inline text-right" role="form">
 			<div class="form-group">
 				<input type="text" class="form-control" name="name"  value="${name}"
@@ -53,8 +56,23 @@
 				</tbody>
 			</table>
 		</form>
-		<div class="text-right">
-			<button type="button" class="btn btn-success" onclick="toAdd();">新增</button>
+		<div class="page text-right">
+			<span>共${totalCount }条记录，每页${pageSize }条，当前第${currPage }页，共${pageCount }页&nbsp;</span>
+			<c:if test="${currPage > 1}">
+				<a href="javascript:;" onclick="toPage(${currPage - 1})">上一页</a>
+			</c:if>
+			<c:if test="${pageCount != 1 }">
+				<span>到第
+					<select onchange="toPage(this.options[this.selectedIndex].text)">
+						<c:forEach begin="1" end="${pageCount }" var="pageNo">
+							<option>${pageNo }</option>
+						</c:forEach>
+					</select>
+				页</span>
+			</c:if>
+			<c:if test="${curPage < pageCount }">
+				<a href="javascript:;" onclick="toPage(${currPage + 1})">下一页</a>
+			</c:if>
 		</div>
 	
 	</div>

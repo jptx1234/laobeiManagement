@@ -13,11 +13,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -42,6 +39,8 @@ import com.laobei.service.StockService;
 @Controller
 @RequestMapping("/purchase")
 public class PurchaseAction {
+	
+	public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Resource
 	private PurchaseService purchaseService;
@@ -105,9 +104,38 @@ public class PurchaseAction {
 	}
 	
 	@RequestMapping("/listAll.do")
-	public String listAll(Model model) {
-		List<Map<String, Object>> list = purchaseService.listAllPurchase();
+	public String listAll(@RequestParam(value = "beginDate", required = false) String beginDate,
+			@RequestParam(value = "endDate", required = false) String endDate, Model model) {
+		
+
+		Calendar calendar = Calendar.getInstance();
+		
+		Date begin = null;
+		Date end = null;
+		try {
+			begin = SDF.parse(beginDate);
+		} catch (Exception e) {
+		}
+		try {
+			end = SDF.parse(endDate);
+		} catch (Exception e) {
+		}
+		
+		if (end == null) {
+			calendar.add(Calendar.DATE, -1);
+			end = calendar.getTime();
+			endDate = SDF.format(end);
+		}
+		if (begin == null || begin.after(end)) {
+			calendar.add(Calendar.MONTH, -1);
+			begin = calendar.getTime();
+			beginDate = SDF.format(begin);
+		}
+		
+		List<Map<String, Object>> list = purchaseService.listAllPurchase(beginDate, endDate);
 		model.addAttribute("list", list);
+		model.addAttribute("beginDate", beginDate);
+		model.addAttribute("endDate", endDate);
 		
 		return "/purchase/list";
 	}
@@ -115,19 +143,19 @@ public class PurchaseAction {
 	
 	@RequestMapping(value="/listAllStockJSON.do",produces="application/json;charset=UTF-8")
 	public @ResponseBody String listAllStockJSON() {
-		List<CookBookEneity> listAllCookBook = cookBookService.listAllCookBook(new CookBookEneity());
+		List<CookBookEneity> listAllCookBook = cookBookService.listAllCookBook(new CookBookEneity(), 0, 0);
 //		List<DrinkEntity> listAllDrink = drinkSerivce.listAllDrink(new DrinkEntity());
 		StockEntity stockEntity = new StockEntity();
 		stockEntity.setStockType("酒水");
-		List<StockEntity> jiushuiStock = stockService.listAllStock(stockEntity);
+		List<StockEntity> jiushuiStock = stockService.listAllStock(stockEntity, 0, 0);
 		stockEntity.setStockType("食材");
-		List<StockEntity> shicaiStock = stockService.listAllStock(stockEntity);
+		List<StockEntity> shicaiStock = stockService.listAllStock(stockEntity, 0, 0);
 		stockEntity.setStockType("调料");
-		List<StockEntity> tiaoliaoStock = stockService.listAllStock(stockEntity);
+		List<StockEntity> tiaoliaoStock = stockService.listAllStock(stockEntity, 0, 0);
 		stockEntity.setStockType("易耗品");
-		List<StockEntity> yihaopinStock = stockService.listAllStock(stockEntity);
+		List<StockEntity> yihaopinStock = stockService.listAllStock(stockEntity, 0, 0);
 		stockEntity.setStockType("固定资产");
-		List<StockEntity> gudingzichanStock = stockService.listAllStock(stockEntity);
+		List<StockEntity> gudingzichanStock = stockService.listAllStock(stockEntity, 0, 0);
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("cp", listAllCookBook);

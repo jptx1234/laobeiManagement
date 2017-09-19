@@ -9,7 +9,7 @@ public interface PurchaseService {
 
 	void insertAndUpdate(List<PurchaseEntity> purchaseEntities);
 
-	List<Map<String, Object>> listAllPurchase();
+	List<Map<String, Object>> listAllPurchase(String beginDate, String endDate);
 
 	List<PurchaseEntity> listByDate(String date);
 

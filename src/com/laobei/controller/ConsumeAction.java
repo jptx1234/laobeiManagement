@@ -27,8 +27,6 @@ import com.laobei.service.ConsumeService;
 import com.laobei.service.CookBookService;
 import com.laobei.service.DrinkService;
 import com.laobei.service.StockService;
-import com.laobei.utils.CommonUtils;
-import com.laobei.utils.Constants;
 
 @Controller
 @RequestMapping("/consume")

@@ -47,8 +47,10 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public List<Map<String, Object>> listAllPurchase() {
-		List<PurchaseEntity> list = purchaseMapper.listAllPurchase();
+	public List<Map<String, Object>> listAllPurchase(String beginDate, String endDate) {
+		String beginTime = beginDate + " 00:00:00";
+		String endTime = endDate + " 23:59:59";
+		List<PurchaseEntity> list = purchaseMapper.listByRange(beginTime, endTime);
 		List<Map<String, Object>> result = new ArrayList<>();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String lastDate = null;

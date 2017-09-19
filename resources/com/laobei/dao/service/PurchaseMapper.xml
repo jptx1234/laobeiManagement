@@ -31,6 +31,7 @@
 			create_time <= #{endTime, jdbcType=VARCHAR}
 			]]>
 		</where>
+		order by create_time desc
 	</select>
 	
 	<select id="getRangeSum" resultType="float" parameterType="string">
