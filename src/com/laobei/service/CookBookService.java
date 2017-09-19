@@ -10,9 +10,11 @@ public interface CookBookService {
 	
 	void addCookBook(CookBookEneity cookBookEneity);
 	
-	List<CookBookEneity> listAllCookBook(CookBookEneity cookBookEneity);
+	List<CookBookEneity> listAllCookBook(CookBookEneity cookBookEneity, int currPage, int pageSize);
 	
 	void deleteCookBook(Long[] ids);
 	
 	HSSFWorkbook exportCookBook(List<CookBookEneity> list);
+
+	int totalCount(CookBookEneity cookBookEneity);
 }

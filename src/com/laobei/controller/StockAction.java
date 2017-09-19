@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.laobei.entity.StockEntity;
 import com.laobei.service.StockService;
+import com.laobei.utils.CommonUtils;
+import com.laobei.utils.Constants;
 
 @Controller
 @RequestMapping("/stock")
@@ -30,7 +32,12 @@ public class StockAction {
 	 * 列出库存
 	 */
 	@RequestMapping("/findAllStock.do")
-	public String findAll(@RequestParam(required = true) String stockType, String name, Model model) {
+	public String findAll(@RequestParam(required = true) String stockType, String name, @RequestParam(value = "currPage", required = false) String currPageString,
+			@RequestParam(value = "pageSize", required = false) String pageSizeString, Model model) {
+
+		int currPage = CommonUtils.parseInt(currPageString, 1);
+		int pageSize = CommonUtils.parseInt(pageSizeString, Constants.PAGE_SIZE);
+		
 		StockEntity stockEntity = new StockEntity();
 		if (stockType != null) {
 			stockEntity.setStockType(stockType);
@@ -40,8 +47,14 @@ public class StockAction {
 			stockEntity.setName(name);
 			model.addAttribute("name", name);
 		}
-		List<StockEntity> allStock = stockService.listAllStock(stockEntity);
+		List<StockEntity> allStock = stockService.listAllStock(stockEntity, currPage, pageSize);
+		int totalCount = stockService.totalCount(stockEntity);
+		
 		model.addAttribute("list", allStock);
+		model.addAttribute("currPage", currPage);
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("pageCount", (totalCount + pageSize - 1) / pageSize);
 
 		return "stock/list";
 	}
@@ -109,7 +122,7 @@ public class StockAction {
 	@RequestMapping(value = "/exportStock.do")
 	public void exportExcel(HttpServletRequest request, HttpServletResponse response, Model model,
 			StockEntity stockEntity) throws Exception {
-		List<StockEntity> list = stockService.listAllStock(stockEntity);
+		List<StockEntity> list = stockService.listAllStock(stockEntity, 0, 0);
 		HSSFWorkbook wb = stockService.exportStock(list);
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Content-disposition", "attachment;filename=kucun.xls");

@@ -72,18 +72,30 @@
     </trim>
   </insert>
   <!-- 根据菜谱条件进行查询 -->
-  <select id="listAllCookBook" resultMap="BaseResultMap"  parameterType="com.laobei.entity.CookBookEneity">
+  <select id="listAllCookBook" resultMap="BaseResultMap" >
     	select 
     	<include refid="Base_Column_List" />
     	 from recipes
     	 <where>
-			<if test="name != null">
-				name like "%"#{name}"%"
+			<if test="entity.name != null">
+				name like "%"#{entity.name}"%"
 			</if>
-			<if test="id != null">
-				and id=#{id}
+			<if test="entity.id != null">
+				and id=#{entity.id}
 			</if>
 		</where>
+		<if test="size != 0">
+			limit #{start}, #{size}
+		</if>
+    </select>
+    <!-- 查询有多少条  -->
+    <select id="count" parameterType="com.laobei.entity.CookBookEneity" resultType="int">
+    	select count(0) from recipes
+    	<where>
+    		<if test="name != null">
+				name like "%"#{name}"%"
+			</if>
+    	</where>
     </select>
     <!--根据id对选中的进行删除  -->
     <delete id="deleteCookBook" parameterType="Long[]" >

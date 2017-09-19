@@ -14,13 +14,32 @@
 		id,name,unit,unit_price,total_count,update_time,stock_type
 	</sql>
 	
-	<select id="listAllStock" resultMap="BaseResultMap" parameterType="com.laobei.entity.StockEntity">
+	<select id="listAllStock" resultMap="BaseResultMap">
 		select 
 		<include refid="Base_Column_List" />
 		from stock
 		<where>
+			<if test="entity.stockType != null">
+				stock_type = #{entity.stockType}
+			</if>
+			<if test="entity.name != null">
+				and name like "%"#{entity.name}"%" 
+			</if>
+			<if test="entity.id != null">
+				and id=#{entity.id}
+			</if>
+		</where>
+		<if test="pageSize > 0">
+			limit #{start}, #{pageSize}
+		</if>
+	</select>
+	
+	<select id="count" parameterType="com.laobei.entity.StockEntity" resultType="int">
+		select count(0)
+		from stock
+		<where>
 			<if test="stockType != null">
-				stock_type = #{stockType}
+				stock_type=#{stockType}
 			</if>
 			<if test="name != null">
 				and name like "%"#{name}"%" 

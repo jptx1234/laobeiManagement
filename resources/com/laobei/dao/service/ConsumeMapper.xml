@@ -21,6 +21,10 @@
 		order by create_time desc
 	</select>
 	
+	<select id="count" resultType="int">
+		SELECT SUM(c) FROM (SELECT COUNT(0) AS c FROM consume_daily GROUP BY create_time) t;
+	</select>
+	
 	<select id="listByRange" resultMap="BaseResultMap" parameterType="string">
 		select 
 		<include refid="Base_Column_List" />
@@ -31,6 +35,7 @@
 			create_time <= #{endTime, jdbcType=VARCHAR}
 			]]>
 		</where>
+		order by create_time desc
 	</select>
 	
 	<select id="getRangeSum" resultType="float" parameterType="string">

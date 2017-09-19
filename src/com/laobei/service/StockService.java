@@ -8,7 +8,7 @@ import com.laobei.entity.StockEntity;
 
 public interface StockService {
 	//根据条件对库存进行查询
-	List<StockEntity> listAllStock(StockEntity stockEntity);
+	List<StockEntity> listAllStock(StockEntity stockEntity, int currPage, int pageSize);
 	//对库存进行添加
 	void insertStock(StockEntity stockEntity);
 	
@@ -19,5 +19,8 @@ public interface StockService {
 	void updateStock(StockEntity stockEntity);
 
 	HSSFWorkbook exportStock(List<StockEntity> list);
+	
+	//计算符合条件的总数
+	int totalCount(StockEntity stockEntity);
 	
 }

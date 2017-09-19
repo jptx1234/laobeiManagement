@@ -12,8 +12,11 @@ public interface DrinkService {
 
 	void deleteDrink(Long[] ids);
 
-	List<DrinkEntity> listAllDrink(DrinkEntity drinkEntity);
+	//如果不分页，把pageSize设为0即可
+	List<DrinkEntity> listAllDrink(DrinkEntity drinkEntity, int currPage, int pageSize);
 
 	HSSFWorkbook exportDrink(List<DrinkEntity> list);
+
+	int totalCount(DrinkEntity drinkEntity);
 
 }

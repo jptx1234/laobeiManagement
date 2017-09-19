@@ -1,6 +1,8 @@
 package com.laobei.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONArray;
@@ -24,11 +27,15 @@ import com.laobei.service.ConsumeService;
 import com.laobei.service.CookBookService;
 import com.laobei.service.DrinkService;
 import com.laobei.service.StockService;
+import com.laobei.utils.CommonUtils;
+import com.laobei.utils.Constants;
 
 @Controller
 @RequestMapping("/consume")
 public class ConsumeAction {
 
+	public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
+	
 	@Resource
 	private ConsumeService consumeService;
 	@Resource
@@ -48,9 +55,39 @@ public class ConsumeAction {
 	}
 	
 	@RequestMapping("/listAll.do")
-	public String listAll(Model model) {
-		List<Map<String, Object>> list = consumeService.listAllConsume();
+	public String listAll(@RequestParam(value = "beginDate", required = false) String beginDate,
+			@RequestParam(value = "endDate", required = false) String endDate, Model model) {
+		
+		Calendar calendar = Calendar.getInstance();
+		
+		Date begin = null;
+		Date end = null;
+		try {
+			begin = SDF.parse(beginDate);
+		} catch (Exception e) {
+		}
+		try {
+			end = SDF.parse(endDate);
+		} catch (Exception e) {
+		}
+		
+		if (end == null) {
+			calendar.add(Calendar.DATE, -1);
+			end = calendar.getTime();
+			endDate = SDF.format(end);
+		}
+		if (begin == null || begin.after(end)) {
+			calendar.add(Calendar.MONTH, -1);
+			begin = calendar.getTime();
+			beginDate = SDF.format(begin);
+		}
+		
+		
+		List<Map<String, Object>> list = consumeService.listAllConsume(beginDate, endDate);
+		
 		model.addAttribute("list", list);
+		model.addAttribute("beginDate", beginDate);
+		model.addAttribute("endDate", endDate);
 		
 		return "/consume/list";
 	}
@@ -58,19 +95,19 @@ public class ConsumeAction {
 	
 	@RequestMapping(value="/listAllStockJSON.do",produces="application/json;charset=UTF-8")
 	public @ResponseBody String listAllStockJSON(HttpServletResponse response) {
-		List<CookBookEneity> listAllCookBook = cookBookService.listAllCookBook(new CookBookEneity());
+		List<CookBookEneity> listAllCookBook = cookBookService.listAllCookBook(new CookBookEneity(), 0, 0);
 //		List<DrinkEntity> listAllDrink = drinkSerivce.listAllDrink(new DrinkEntity());
 		StockEntity stockEntity = new StockEntity();
 		stockEntity.setStockType("酒水");
-		List<StockEntity> jiushuiStock = stockService.listAllStock(stockEntity);
+		List<StockEntity> jiushuiStock = stockService.listAllStock(stockEntity, 0, 0);
 		stockEntity.setStockType("食材");
-		List<StockEntity> shicaiStock = stockService.listAllStock(stockEntity);
+		List<StockEntity> shicaiStock = stockService.listAllStock(stockEntity, 0, 0);
 		stockEntity.setStockType("调料");
-		List<StockEntity> tiaoliaoStock = stockService.listAllStock(stockEntity);
+		List<StockEntity> tiaoliaoStock = stockService.listAllStock(stockEntity, 0, 0);
 		stockEntity.setStockType("易耗品");
-		List<StockEntity> yihaopinStock = stockService.listAllStock(stockEntity);
+		List<StockEntity> yihaopinStock = stockService.listAllStock(stockEntity, 0, 0);
 		stockEntity.setStockType("固定资产");
-		List<StockEntity> gudingzichanStock = stockService.listAllStock(stockEntity);
+		List<StockEntity> gudingzichanStock = stockService.listAllStock(stockEntity, 0, 0);
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("cp", listAllCookBook);
@@ -131,7 +168,7 @@ public class ConsumeAction {
 		for (ConsumeEntity cookbookConsume : cookbookList) {
 			CookBookEneity cookBookModel = new CookBookEneity();
 			cookBookModel.setName(cookbookConsume.getName());
-			List<CookBookEneity> cookBookEneities = cookBookService.listAllCookBook(cookBookModel);
+			List<CookBookEneity> cookBookEneities = cookBookService.listAllCookBook(cookBookModel, 0, 0);
 			if (cookBookEneities != null && cookBookEneities.size() > 0) {
 				CookBookEneity cookBookEneity = cookBookEneities.get(0);
 				String primaryMaterial = cookBookEneity.getPrimaryMaterial();
@@ -161,6 +198,11 @@ public class ConsumeAction {
 	
 	@RequestMapping("/generateConsumeList.do")
 	public String generateConsumeList(String date, Model model) {
+		try {
+			SDF.parse(date);
+		} catch (Exception e) {
+			return null;
+		}
 		List<ConsumeEntity> listByDate = consumeService.listByDate(date);
 		Map<String, Map<String, Float>> resultMap = new HashMap<>();
 		for (ConsumeEntity consumeEntity : listByDate) {

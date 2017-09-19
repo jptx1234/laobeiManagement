@@ -32,8 +32,10 @@ public class CookBookServiceImpl implements CookBookService{
 	 * 根据条件查找菜谱
 	 */
 	@Override
-	public List<CookBookEneity> listAllCookBook(CookBookEneity cookBookEneity) {
-		return cookBookMapper.listAllCookBook(cookBookEneity);
+	public List<CookBookEneity> listAllCookBook(CookBookEneity cookBookEneity, int currPage, int pageSize) {
+		int start = (currPage - 1) * pageSize;
+		
+		return cookBookMapper.listAllCookBook(cookBookEneity, start, pageSize);
 	}
 	/**
 	 * 对菜谱进行删除
@@ -66,6 +68,14 @@ public class CookBookServiceImpl implements CookBookService{
 		
 		HSSFWorkbook workbook = ExcelUtils.exportExcel("菜谱表", titleList, contentList);
 		return workbook;
+	}
+	
+	/**
+	 * 计算此条件对应的条数
+	 */
+	@Override
+	public int totalCount(CookBookEneity cookBookEneity) {
+		return cookBookMapper.count(cookBookEneity);
 	}    
 	
 }

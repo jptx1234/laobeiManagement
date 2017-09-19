@@ -48,8 +48,11 @@ public class ConsumeServiceImpl implements ConsumeService {
 	}
 
 	@Override
-	public List<Map<String, Object>> listAllConsume() {
-		List<ConsumeEntity> list = consumeMapper.listAllConsume();
+	public List<Map<String, Object>> listAllConsume(String beginDateStr, String endDateStr) {
+		String beginTime = beginDateStr + " 00:00:00";
+		String endTime = endDateStr + " 23:59:59";
+		
+		List<ConsumeEntity> list = consumeMapper.listByRange(beginTime, endTime);
 		List<Map<String, Object>> result = new ArrayList<>();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String lastDate = null;
@@ -120,6 +123,11 @@ public class ConsumeServiceImpl implements ConsumeService {
 		Float sum = consumeMapper.getRangeSum(beginTime, endTime);
 		
 		return sum;
+	}
+
+	@Override
+	public int totalCount() {
+		return consumeMapper.count();
 	}
 
 }

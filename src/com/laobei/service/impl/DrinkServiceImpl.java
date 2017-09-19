@@ -31,8 +31,10 @@ public class DrinkServiceImpl implements DrinkService {
 	}
 
 	@Override
-	public List<DrinkEntity> listAllDrink(DrinkEntity drinkEntity) {
-		return drinkMapper.listAllDrink(drinkEntity);
+	public List<DrinkEntity> listAllDrink(DrinkEntity drinkEntity, int currPage, int pageSize) {
+		int start = (currPage - 1) * pageSize;
+		
+		return drinkMapper.listAllDrink(drinkEntity, start, pageSize);
 	}
 
 	@Override
@@ -53,7 +55,12 @@ public class DrinkServiceImpl implements DrinkService {
 		
 		HSSFWorkbook wb = ExcelUtils.exportExcel("酒水单表", titleList, contentList);
         return wb;    
-    }    
+    }
+
+	@Override
+	public int totalCount(DrinkEntity drinkEntity) {
+		return drinkMapper.count(drinkEntity);
+	}    
 	
 	
 }

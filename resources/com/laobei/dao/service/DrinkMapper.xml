@@ -43,11 +43,27 @@
     </trim>
   </insert>
   <!-- 根据酒水单条件进行查询 -->
-  <select id="listAllDrink" resultMap="BaseResultMap"  parameterType="com.laobei.entity.DrinkEntity">
+  <select id="listAllDrink" resultMap="BaseResultMap" >
     	select 
     	<include refid="Base_Column_List" />
     	 from drink
     	 <where>
+			<if test="entity.drinkName != null">
+				drink_name like "%"#{entity.drinkName}"%"
+			</if>
+			<if test="entity.id != null">
+				and id=#{entity.id}
+			</if>
+		</where>
+		<if test="pageSize > 0">
+			limit #{start}, #{pageSize}
+		</if>		
+    </select>
+    <!-- 查询对应的酒水单数量  -->
+    <select id="count" parameterType="com.laobei.entity.DrinkEntity" resultType="int">
+    	select count(0)
+    	from drink
+    	<where>
 			<if test="drinkName != null">
 				drink_name like "%"#{drinkName}"%"
 			</if>
@@ -56,6 +72,7 @@
 			</if>
 		</where>
     </select>
+    
     <!--根据id对选中的酒水单进行删除  -->
     <delete id="deleteDrink" parameterType="Long[]" >
 		delete from drink

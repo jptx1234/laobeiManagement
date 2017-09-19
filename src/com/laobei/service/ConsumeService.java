@@ -9,10 +9,12 @@ public interface ConsumeService {
 
 	void insertAndUpdate(List<ConsumeEntity> consumeEntities);
 
-	List<Map<String, Object>> listAllConsume();
+	List<Map<String, Object>> listAllConsume(String beginDateStr, String endDateStr);
 
 	List<ConsumeEntity> listByDate(String date);
 
 	Float getDaySum(String date);
+
+	int totalCount();
 
 }

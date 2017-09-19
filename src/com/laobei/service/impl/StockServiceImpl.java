@@ -27,11 +27,12 @@ public class StockServiceImpl implements StockService {
 	 * 对库存进行查询所有 
 	 */
 	@Override
-	public List<StockEntity> listAllStock(StockEntity stockEntity) {
+	public List<StockEntity> listAllStock(StockEntity stockEntity, int currPage, int pageSize) {
+		int start = (currPage - 1) * pageSize;
 		try {
-			return stockMapper.listAllStock(stockEntity);
+			return stockMapper.listAllStock(stockEntity, start, pageSize);
 		} catch (Exception e) {
-			logger.error("insertStock error");
+			logger.error("listStock error");
 			try {
 				throw new Exception("", e);
 			} catch (Exception e1) {
@@ -95,6 +96,10 @@ public class StockServiceImpl implements StockService {
 
 		HSSFWorkbook wb = ExcelUtils.exportExcel(stockType+"库存表", titleList, contentList);
 		return wb;
+	}
+	@Override
+	public int totalCount(StockEntity stockEntity) {
+		return stockMapper.count(stockEntity);
 	}
 
 }
