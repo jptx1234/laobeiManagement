@@ -23,9 +23,6 @@
 	padding: 20px;
 	border-top: 1px solid #bdbdbd;
 }
-.has-error{
-	background-color: rgba(169, 68, 66, 0.16);
-}
 </style>
 </head>
 <body>
@@ -59,7 +56,11 @@
 
 function save(){
 	var canSubmit = true;
-	$(".has-error").removeClass("has-error");
+	$(".has-error").removeClass("has-error").removeAttr("data-toggle").removeAttr("data-placement").removeAttr("title").removeAttr("data-original-title");
+	$(":input").tooltip('destroy');
+	$(".tooltip").remove();
+	
+	
 	var recipeNameInput = $(":input[name='drinkName']");
 	if(recipeNameInput.val() == ""){
 		recipeNameInput.parent(".content").addClass("has-error");
@@ -72,6 +73,20 @@ function save(){
 		priceInput.attr("placeholder", "价格不能为空");
 		canSubmit = false;
 	}
+	
+	$(":input").each(function(){
+		var $this = $(this);
+		var v = $this.val();
+		if(v != null && (v.indexOf(",") >= 0 || v.indexOf("*") >= 0)){
+			$this.attr("data-placement", "bottom");
+			$this.attr("title", "不能有逗号（,）星号（*）");
+			$this.addClass("has-error");
+			$this.tooltip('show');
+			canSubmit = false;
+		}
+	});
+	
+	
 	if(canSubmit){
 		$("#drinkForm")[0].submit();
 	}

@@ -24,9 +24,6 @@
 	padding: 20px;
 	border-top: 1px solid #bdbdbd;
 }
-.has-error{
-	background-color: rgba(169, 68, 66, 0.16);
-}
 .form-control{
 	width: 50%;
 }
@@ -91,21 +88,45 @@
 
 <script type="text/javascript">
 
+function checkNotEmpty(ele, msg){
+	if(ele.val() == null || ele.val() == ""){
+		ele.parent(".content").addClass("has-error");
+		ele.attr("placeholder", msg);
+		ele.attr("data-placement", "bottom");
+		ele.attr("title", msg);
+		ele.addClass("has-error");
+		ele.tooltip('show');
+		return false;
+	}
+	
+	return true;
+}
+
 function save(){
 	var canSubmit = true;
-	$(".has-error").removeClass("has-error");
-	var recipeNameInput = $(":input[name='drinkName']");
-	if(recipeNameInput.val() == ""){
-		recipeNameInput.parent(".content").addClass("has-error");
-		recipeNameInput.attr("placeholder", "酒水名不能为空");
-		canSubmit = false;
-	}
-	var priceInput = $(":input[name='drinkPrice']");
-	if(priceInput.val() == ""){
-		priceInput.parent(".content").addClass("has-error");
-		priceInput.attr("placeholder", "价格不能为空");
-		canSubmit = false;
-	}
+	$(".has-error").removeClass("has-error").removeAttr("data-toggle").removeAttr("data-placement").removeAttr("title").removeAttr("data-original-title");
+	$(":text").tooltip('destroy');
+	$(".tooltip").remove();
+	
+	canSubmit = canSubmit & checkNotEmpty($(":input[name='name']"), "库存名不能为空");
+	canSubmit = canSubmit & checkNotEmpty($(":input[name='unit']"), "单位不能为空");
+	canSubmit = canSubmit & checkNotEmpty($(":input[name='unitPrice']"), "单价不能为空");
+	canSubmit = canSubmit & checkNotEmpty($(":input[name='totalCount']"), "数量不能为空");
+	
+	
+	$(":input").each(function(){
+		var $this = $(this);
+		var v = $this.val();
+		if(v != null && (v.indexOf(",") >= 0 || v.indexOf("*") >= 0)){
+			$this.attr("data-placement", "bottom");
+			$this.attr("title", "不能有逗号（,）星号（*）");
+			$this.addClass("has-error");
+			$this.tooltip('show');
+			canSubmit = false;
+		}
+	});
+	
+	
 	if(canSubmit){
 		$("#drinkForm")[0].submit();
 	}

@@ -76,6 +76,9 @@ h1{
     padding: 10px;
     margin-bottom: 6px;
 }
+.has-error{
+	box-shadow: 0 0 40px 4px #ea5252;
+}
 </style>
 <script>
 alert = function(msg){
