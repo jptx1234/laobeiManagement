@@ -3,6 +3,7 @@ package com.laobei.controller;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,10 +14,13 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +39,7 @@ import com.laobei.service.CookBookService;
 import com.laobei.service.DrinkService;
 import com.laobei.service.PurchaseService;
 import com.laobei.service.StockService;
+import com.laobei.utils.CommonUtils;
 
 @Controller
 @RequestMapping("/purchase")
@@ -108,29 +113,9 @@ public class PurchaseAction {
 			@RequestParam(value = "endDate", required = false) String endDate, Model model) {
 		
 
-		Calendar calendar = Calendar.getInstance();
-		
-		Date begin = null;
-		Date end = null;
-		try {
-			begin = SDF.parse(beginDate);
-		} catch (Exception e) {
-		}
-		try {
-			end = SDF.parse(endDate);
-		} catch (Exception e) {
-		}
-		
-		if (end == null) {
-			calendar.add(Calendar.DATE, -1);
-			end = calendar.getTime();
-			endDate = SDF.format(end);
-		}
-		if (begin == null || begin.after(end)) {
-			calendar.add(Calendar.MONTH, -1);
-			begin = calendar.getTime();
-			beginDate = SDF.format(begin);
-		}
+		String[] dates = CommonUtils.dealDateRange(beginDate, endDate);
+		beginDate = dates[0];
+		endDate = dates[1];
 		
 		List<Map<String, Object>> list = purchaseService.listAllPurchase(beginDate, endDate);
 		model.addAttribute("list", list);
@@ -316,5 +301,23 @@ public class PurchaseAction {
 		model.addAttribute("date", date);
 		model.addAttribute("result", resultMap);
 		return "/purchase/generatePurchaseList";
+	}
+	
+	@RequestMapping("/exportPurchase.do")
+	public void exportPurchase(HttpServletRequest request, HttpServletResponse response, Model model,
+			@RequestParam(value = "beginDate", required = false) String beginDate,
+			@RequestParam(value = "endDate", required = false) String endDate) throws Exception {
+		
+		String[] dates = CommonUtils.dealDateRange(beginDate, endDate);
+		beginDate = dates[0];
+		endDate = dates[1];
+		
+		HSSFWorkbook wb = purchaseService.exportPurchase(beginDate, endDate);
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Content-disposition", "attachment;filename=caigou_"+beginDate+"_"+endDate+".xls");
+		OutputStream ouputStream = response.getOutputStream();
+		wb.write(ouputStream);
+		ouputStream.flush();
+		ouputStream.close();
 	}
 }

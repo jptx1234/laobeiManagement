@@ -2,21 +2,27 @@ package com.laobei.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.BiConsumer;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.laobei.dao.service.PurchaseMapper;
 import com.laobei.dao.service.StockMapper;
+import com.laobei.entity.ConsumeEntity;
 import com.laobei.entity.PurchaseEntity;
 import com.laobei.entity.StockEntity;
 import com.laobei.service.PurchaseService;
+import com.laobei.utils.ExcelUtils;
 
 @Service
 @Transactional
@@ -125,6 +131,53 @@ public class PurchaseServiceImpl implements PurchaseService {
 		Float sum = purchaseMapper.getRangeSum(beginTime, endTime);
 		
 		return sum;
+	}
+
+	@Override
+	public HSSFWorkbook exportPurchase(String beginDate, String endDate) {
+		String beginTime = beginDate + " 00:00:00";
+		String endTime = endDate + " 23:59:59";
+		
+		List<PurchaseEntity> list = purchaseMapper.listByRange(beginTime, endTime);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Map<String, List<String>> datePurchaseMap = new TreeMap<>();
+		
+		StringBuilder sb = new StringBuilder();
+		for (PurchaseEntity purchase : list) {
+			String dateString = sdf.format(purchase.getCreateTime());
+			List<String> purchaseListTheDay = datePurchaseMap.get(dateString);
+			if (purchaseListTheDay == null) {
+				purchaseListTheDay = new ArrayList<>();
+				datePurchaseMap.put(dateString, purchaseListTheDay);
+			}
+			
+			sb.delete(0, sb.length());
+			sb.append(purchase.getName());
+			sb.append(" * ");
+			sb.append(purchase.getCount());
+			sb.append(" * ");
+			sb.append(purchase.getUnit());
+			
+			purchaseListTheDay.add(sb.toString());
+		}
+		
+		List<List<String>> contentList = new ArrayList<>();
+		List<String> row = new ArrayList<>();
+		datePurchaseMap.forEach(new BiConsumer<String, List<String>>() {
+
+			@Override
+			public void accept(String t, List<String> u) {
+				row.add(t);
+				row.addAll(u);
+				contentList.add(row);
+			}
+			
+		});
+		
+		String[] excelHeader = {"日期", "内容"};
+		
+		return ExcelUtils.exportExcel("采购表", Arrays.asList(excelHeader), contentList);
 	}
 
 }

@@ -2,13 +2,17 @@ package com.laobei.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.BiConsumer;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +21,7 @@ import com.laobei.dao.service.StockMapper;
 import com.laobei.entity.ConsumeEntity;
 import com.laobei.entity.StockEntity;
 import com.laobei.service.ConsumeService;
+import com.laobei.utils.ExcelUtils;
 
 @Service
 @Transactional
@@ -128,6 +133,53 @@ public class ConsumeServiceImpl implements ConsumeService {
 	@Override
 	public int totalCount() {
 		return consumeMapper.count();
+	}
+
+	@Override
+	public HSSFWorkbook exportConsume(String beginDate, String endDate) {
+		String beginTime = beginDate + " 00:00:00";
+		String endTime = endDate + " 23:59:59";
+		
+		List<ConsumeEntity> list = consumeMapper.listByRange(beginTime, endTime);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Map<String, List<String>> dateConsumeMap = new TreeMap<>();
+		
+		StringBuilder sb = new StringBuilder();
+		for (ConsumeEntity consume : list) {
+			String dateString = sdf.format(consume.getCreateTime());
+			List<String> consumeListTheDay = dateConsumeMap.get(dateString);
+			if (consumeListTheDay == null) {
+				consumeListTheDay = new ArrayList<>();
+				dateConsumeMap.put(dateString, consumeListTheDay);
+			}
+			
+			sb.delete(0, sb.length());
+			sb.append(consume.getName());
+			sb.append(" * ");
+			sb.append(consume.getCount());
+			sb.append(" * ");
+			sb.append(consume.getUnit());
+			
+			consumeListTheDay.add(sb.toString());
+		}
+		
+		List<List<String>> contentList = new ArrayList<>();
+		List<String> row = new ArrayList<>();
+		dateConsumeMap.forEach(new BiConsumer<String, List<String>>() {
+
+			@Override
+			public void accept(String t, List<String> u) {
+				row.add(t);
+				row.addAll(u);
+				contentList.add(row);
+			}
+			
+		});
+		
+		String[] excelHeader = {"日期", "内容"};
+		
+		return ExcelUtils.exportExcel("消耗表", Arrays.asList(excelHeader), contentList);
 	}
 
 }

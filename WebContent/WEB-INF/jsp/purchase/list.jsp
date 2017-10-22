@@ -65,6 +65,7 @@ th, td{
 			</table>
 		</form>
 	</div>
+	<button type="button" id="exportExcel" class="btn btn-default" onclick="exportExcel(this);">导出Excel</button>
 
 </div>
 <script type="text/javascript">
@@ -86,6 +87,19 @@ th, td{
 	function getPic(date){
 		window.open("${ctx}/purchase/generatePurchaseList.do?date="+date, "_blank");
 	}
+	
+	function exportExcel(btn){
+        jqconfirm("确定导出Excel表格吗？", function(){
+            var button = $(btn);
+            button.text("正在生成Excel表格……");
+            button.attr("disabled", "disabled");
+            window.setTimeout(function(){
+                button.removeAttr("disabled");
+                button.text("导出Excel");
+            }, 10000);
+            window.location.href="${pageContext.request.contextPath}/purchase/exportPurchase.do?beginDate=${beginDate}&endDate=${endDate}";
+        });
+    }
 	
 </script>
 </body>

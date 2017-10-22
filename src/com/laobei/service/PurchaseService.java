@@ -3,6 +3,8 @@ package com.laobei.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import com.laobei.entity.PurchaseEntity;
 
 public interface PurchaseService {
@@ -14,5 +16,7 @@ public interface PurchaseService {
 	List<PurchaseEntity> listByDate(String date);
 
 	Float getDaySum(String date);
+
+	HSSFWorkbook exportPurchase(String beginDate, String endDate);
 
 }
