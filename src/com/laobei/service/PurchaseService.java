@@ -17,6 +17,6 @@ public interface PurchaseService {
 
 	Float getDaySum(String date);
 
-	HSSFWorkbook exportPurchase(String beginDate, String endDate);
+	HSSFWorkbook exportPurchase(String beginDate, String endDate, String imgBasePath);
 
 }

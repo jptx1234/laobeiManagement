@@ -304,7 +304,7 @@ public class PurchaseAction {
 	}
 	
 	@RequestMapping("/exportPurchase.do")
-	public void exportPurchase(HttpServletRequest request, HttpServletResponse response, Model model,
+	public void exportPurchase(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model,
 			@RequestParam(value = "beginDate", required = false) String beginDate,
 			@RequestParam(value = "endDate", required = false) String endDate) throws Exception {
 		
@@ -312,7 +312,8 @@ public class PurchaseAction {
 		beginDate = dates[0];
 		endDate = dates[1];
 		
-		HSSFWorkbook wb = purchaseService.exportPurchase(beginDate, endDate);
+		String imgBasePath = session.getServletContext().getRealPath("/") + "/upload/";
+		HSSFWorkbook wb = purchaseService.exportPurchase(beginDate, endDate, imgBasePath);
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Content-disposition", "attachment;filename=caigou_"+beginDate+"_"+endDate+".xls");
 		OutputStream ouputStream = response.getOutputStream();

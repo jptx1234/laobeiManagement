@@ -1,5 +1,9 @@
 package com.laobei.service.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,8 +15,16 @@ import java.util.function.BiConsumer;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Picture;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.util.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -134,7 +146,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public HSSFWorkbook exportPurchase(String beginDate, String endDate) {
+	public HSSFWorkbook exportPurchase(String beginDate, String endDate, String imgBasePath) {
 		String beginTime = beginDate + " 00:00:00";
 		String endTime = endDate + " 23:59:59";
 		
@@ -177,7 +189,72 @@ public class PurchaseServiceImpl implements PurchaseService {
 		
 		String[] excelHeader = {"日期", "内容"};
 		
-		return ExcelUtils.exportExcel("采购表", Arrays.asList(excelHeader), contentList);
+		HSSFWorkbook workbook = ExcelUtils.exportExcel("采购表", Arrays.asList(excelHeader), contentList);
+		
+		for (String dateString : datePurchaseMap.keySet()) {
+			String[] dateStrings = dateString.split("-");
+			String year = dateStrings[0];
+			String month = dateStrings[1];
+			String parentPath = imgBasePath + year + "/" + month + "/";
+			final String yyyyMMddString = dateString.replaceAll("-", "");
+			File parentPathFile = new File(parentPath);
+			if (!parentPathFile.exists() || !parentPathFile.isDirectory()) {
+				continue;
+			}
+			File[] listFiles = parentPathFile.listFiles(new FilenameFilter() {
+				
+				@Override
+				public boolean accept(File dir, String name) {
+					if (name.startsWith(yyyyMMddString)) {
+						return true;
+					}
+					return false;
+				}
+			});
+			
+			
+			if(listFiles == null) {
+				continue;
+			}
+				
+			HSSFSheet sheet = workbook.createSheet("图片_"+dateString);
+			
+			int rowIndex = 1;
+			for (File imgFile : listFiles) {
+				try(InputStream is = new FileInputStream(imgFile)){
+					byte[] bytes = IOUtils.toByteArray(is);  
+					
+					int pictureType = 0;
+					String fileType = FilenameUtils.getExtension(imgFile.getName());
+					if ("jpg".equals(fileType) || "jpeg".equals(fileType)) {
+						pictureType = Workbook.PICTURE_TYPE_JPEG;
+					}else if ("png".equals(fileType)) {
+						pictureType = Workbook.PICTURE_TYPE_PNG;
+					}else {
+						pictureType = Workbook.PICTURE_TYPE_JPEG;
+					}
+					
+					int pictureIdx = workbook.addPicture(bytes, pictureType);  
+					
+					CreationHelper helper = workbook.getCreationHelper();  
+					Drawing drawing = sheet.createDrawingPatriarch();  
+					ClientAnchor anchor = helper.createClientAnchor();  
+					
+					// 图片插入坐标  
+					anchor.setCol1(0);  
+					anchor.setRow1(rowIndex);
+					rowIndex += 2;
+					
+					// 插入图片  
+					Picture pict = drawing.createPicture(anchor, pictureIdx);  
+					pict.resize(); 
+				}catch (Exception e) {
+				}
+			}
+		}
+		
+		
+		return workbook;
 	}
 
 }
