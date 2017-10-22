@@ -40,7 +40,6 @@ public class ExcelUtils {
             HSSFCell cell = titleRow.createCell(i);    
             cell.setCellValue(titleList.get(i));    
             cell.setCellStyle(titleStyle);    
-            sheet.setColumnWidth(i, 20 * 256);
         }    
     
         for (int i = 0; i < contentList.size(); i++) {    
@@ -51,6 +50,7 @@ public class ExcelUtils {
             	Cell cell = row.createCell(j);
             	cell.setCellStyle(contentStyle);
             	cell.setCellValue(cells.get(j));
+            	sheet.setColumnWidth(j, 20 * 256);
 			}
         }    
         return wb;    
